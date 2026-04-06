@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://migrationproof.io/sitemap.xml

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Dependency Chain Problem: Why Migrated Data Arrives Intact but Operationally Dead — Migration Proof</title>
+  <meta name="description" content="A record that loads successfully is not the same as a record that works." />
+  <meta property="og:title" content="The Dependency Chain Problem: Why Migrated Data Arrives Intact but Operationally Dead" />
+  <meta property="og:description" content="A record that loads successfully is not the same as a record that works." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://migrationproof.io/blog/dependency-chains/" />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/blog/dependency-chains/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:0.02em;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    .muted{color:var(--muted)}
+
+    /* Article styles */
+    .article-header{padding:120px 24px 40px;max-width:760px;margin:0 auto}
+    .article-header .meta{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+    .article-header h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.02em}
+    .article-header .subtitle-text{font-size:1.15rem;color:var(--muted);line-height:1.6;font-style:italic}
+
+    .article-body{max-width:760px;margin:0 auto;padding:0 24px 80px;font-size:1.08rem;line-height:1.8}
+    .article-body h2{font-size:1.6rem;font-weight:700;color:var(--text);margin-top:48px;margin-bottom:16px;padding-top:24px;border-top:1px solid var(--line);letter-spacing:-0.01em}
+    .article-body p{margin-bottom:20px;color:var(--text)}
+    .article-body strong{color:var(--text);font-weight:600}
+    .article-body em{color:var(--accent)}
+    .article-body blockquote{border-left:3px solid var(--accent);padding:16px 24px;margin:28px 0;background:rgba(130,230,181,0.05);font-style:italic;border-radius:0 12px 12px 0}
+    .article-body code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;background:var(--panel);padding:2px 6px;border-radius:4px;border:1px solid var(--line)}
+    .article-body pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;overflow-x:auto;margin:24px 0;line-height:1.5}
+    .article-body pre code{background:none;padding:0;font-size:0.85rem;border:none}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.95rem}
+    .article-body th{text-align:left;padding:10px 16px;border-bottom:2px solid var(--accent);color:var(--text);font-weight:600}
+    .article-body td{padding:10px 16px;border-bottom:1px solid var(--line)}
+    .article-body hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+    .article-body ul,.article-body ol{margin:16px 0 20px 24px}.article-body li{margin-bottom:8px}
+
+    .note-from-us{margin-top:60px;padding:28px;background:var(--panel);border-radius:18px;border:1px solid var(--line)}
+    .note-from-us h2{font-size:1.3rem;margin-bottom:16px;color:var(--text)}
+    .note-from-us p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:1rem}
+    .note-from-us a.email{font-family:'JetBrains Mono','Fira Code',monospace;font-size:1.15rem;color:var(--accent);display:block;margin:16px 0}
+
+    .series-nav{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px}
+    .series-nav a{font-size:0.95rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;transition:color .2s}
+    .series-nav a:hover{color:var(--text)}
+    .series-nav .label{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px}
+    .series-nav .next{text-align:right}
+
+    /* Blog index styles */
+    .article-list{display:flex;flex-direction:column;gap:18px}
+    .article-card{display:block;padding:24px 28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;transition:all .2s;box-shadow:var(--shadow)}
+    .article-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .article-card .card-meta{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono','Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px}
+    .article-card h3{font-size:1.25rem;color:var(--text);margin-bottom:8px;font-weight:600}
+    .article-card p{font-size:0.95rem;color:var(--muted);line-height:1.5;margin:0}
+    .article-card .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.72rem;padding:4px 10px;border-radius:999px;background:var(--panel-2);color:var(--accent);border:1px solid var(--line)}
+
+    .start-box{margin-bottom:40px;padding:20px 24px;background:var(--panel);border-radius:12px;border-left:3px solid var(--accent)}
+    .start-box p{margin:0;font-size:0.95rem;color:var(--muted)}
+    .start-box strong{color:var(--text)}
+
+    @media(max-width:768px){
+      .article-header h1{font-size:1.8rem}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .series-nav{flex-direction:column}
+      .footer-panel{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark">MP</div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+  <div class="article-header">
+    <div class="meta">Article 3 · April 8, 2026 · Migration Proof</div>
+    <h1>The Dependency Chain Problem: Why Migrated Data Arrives Intact but Operationally Dead</h1>
+    <p class="subtitle-text">A record that loads successfully is not the same as a record that works.</p>
+  </div>
+  <div class="article-body">
+    <p><em>A record that loads successfully is not the same as a record that works. In enterprise systems, data has structure — and if you migrate the data without respecting that structure, you get a target system full of records that reference things that do not exist.</em></p>
+<hr />
+<p>A purchase order cannot exist without a supplier. A goods receipt cannot exist without a purchase order. An invoice cannot exist without a goods receipt. This is not a project management opinion. It is a structural fact about how enterprise systems work.</p>
+<p>Every enterprise system enforces dependencies between object types. These dependencies are not optional. They are hard constraints. If you attempt to create a purchase order that references a supplier that does not exist in the target system, the creation fails. If you attempt to post a goods receipt against a purchase order that was never migrated, the posting is rejected. If you attempt to process an invoice that references a goods receipt that was excluded from scope, the invoice has nothing to attach to.</p>
+<p>These are not edge cases. They are the normal operating constraints of any integrated system. And they create a problem that most migration programmes discover too late: <strong>the order in which you migrate data matters as much as the data itself.</strong></p>
+<hr />
+<h2>What a dependency chain looks like</h2>
+<p>Take a single invoice in a procurement system. That invoice does not exist in isolation. It is the tip of a chain:</p>
+<pre><code>Invoice 5105600012  (€42,680)
+  └── Goods Receipt 5000023841
+        └── Purchase Order 4500017892  (3 line items)
+              ├── Material MAT-9921   (Precision bearing)
+              ├── Material MAT-4455   (Shaft seal)
+              ├── Material MAT-7780   (O-ring kit)
+              └── Supplier 100234     (Müller Industrietechnik)
+</code></pre>
+<p>This chain has five levels and seven objects. The invoice at the top depends on the goods receipt. The goods receipt depends on the purchase order. The purchase order depends on three materials and one supplier. The materials and supplier are leaf nodes — they depend on nothing else.</p>
+<p>If you are migrating this chain, the creation order is not arbitrary. It must be <strong>leaf to root</strong>:</p>
+<ol>
+<li>First, create the supplier (no dependencies)</li>
+<li>Then, create the materials (no dependencies)</li>
+<li>Then, create the purchase order (references supplier + materials)</li>
+<li>Then, post the goods receipt (references purchase order)</li>
+<li>Finally, process the invoice (references goods receipt + supplier)</li>
+</ol>
+<p>Get this order wrong — attempt to create the purchase order before the supplier exists — and the creation fails. Not with a subtle data quality issue that surfaces months later. With a hard system error that stops the migration in its tracks.</p>
+<hr />
+<h2>Why this is harder than it sounds</h2>
+<p>In the example above, the chain is clean and linear. In a real enterprise migration, chains are tangled:</p>
+<p><strong>Shared dependencies.</strong> Supplier 100234 is not referenced by one purchase order. It might be referenced by fifty. Each of those purchase orders has its own goods receipts, its own invoices. If the supplier fails migration — for any reason — every one of those fifty chains is blocked. One supplier, fifty cascading failures.</p>
+<p><strong>Cross-chain references.</strong> A material that appears in one purchase order may also appear in a bill of materials, which is referenced by a production order, which is referenced by a cost centre allocation. The dependency graph is not a tree. It is a web.</p>
+<p><strong>Scope boundaries.</strong> Migration programmes often define scope by object type: "we are migrating suppliers in Phase 1, materials in Phase 2, purchase orders in Phase 3." This sounds orderly. But if Phase 1 excludes a supplier that Phase 3 needs for a purchase order, the PO fails — not because of a data quality issue, but because of a scoping decision made months earlier by a different team.</p>
+<p><strong>Partial migrations.</strong> A supplier is migrated, but not all of its organisational assignments come across. The supplier record exists in the target system. The purchase order references it. But when the PO is created, it fails — because the supplier has no valid purchasing organisation assignment for the relevant company code. The supplier is present. The dependency is not satisfied. The PO cannot be posted. Everything downstream is blocked.</p>
+<hr />
+<h2>The cascade effect</h2>
+<p>The most dangerous property of dependency chains is that failures cascade. A single root-cause failure can block dozens of downstream objects.</p>
+<p>Consider a real scenario: a supplier has a country code that is not valid in the target system's ISO configuration. The supplier cannot be migrated cleanly. That single field-level issue cascades:</p>
+<pre><code>Root cause: Supplier 100456, COUNTRY = &quot;UK&quot; (not valid ISO 3166)
+
+Cascade:
+  → 12 Purchase Orders reference this supplier → blocked
+    → 8 Goods Receipts reference these POs → blocked
+      → 8 Invoices reference these GRs → blocked
+
+Total impact: 1 field-level issue → 29 objects blocked
+</code></pre>
+<p>A programme dashboard that tracks mapping coverage would show all 29 of these objects as "mapped." The supplier has a target. The purchase orders have targets. The goods receipts and invoices have targets. Everything is green.</p>
+<p>But nothing works. The chain is broken at the root, and every object that depends on it — directly or transitively — is blocked. The dashboard cannot see this because the dashboard tracks fields, not chains.</p>
+<hr />
+<h2>What chain-complete verification means</h2>
+<p>We use the term <strong>dependency-chain integrity</strong> to describe a specific property: every object in the target system has all of its upstream dependencies present, valid, and proven.</p>
+<p>This means:</p>
+<p><strong>Every supplier referenced by a purchase order must exist in the target — with all required organisational assignments.</strong> Not just the supplier master record. The company code assignment. The purchasing organisation assignment. The payment terms. The reconciliation account. If any of these are missing, the PO that references the supplier will fail.</p>
+<p><strong>Every material referenced by a purchase order must exist in the target — with a valid configuration for the relevant plant.</strong> Not just the material master. The plant-specific data. The storage location. The valuation class. If the material exists but lacks a valid plant assignment, the PO line item referencing it cannot be created.</p>
+<p><strong>Every purchase order referenced by a goods receipt must exist in the target — and must be in a state that allows goods receipt posting.</strong> A PO that was migrated but is blocked or incomplete cannot receive goods. The GR attempt will fail even though the PO technically exists.</p>
+<p><strong>Every goods receipt referenced by an invoice must exist — and must be in a state that allows invoice verification.</strong> The three-way match (PO, GR, invoice) is enforced by the target system. Missing any leg of the match causes the invoice to go to exception.</p>
+<p>Checking all of this requires walking the chain from top to bottom, verifying each link, and computing the cascade impact of every failure. This is not something a mapping spreadsheet can do. It requires a graph-aware engine that understands the structural relationships between object types.</p>
+<hr />
+<h2>Creation order: leaf to root</h2>
+<p>The correct migration order is always <strong>leaf to root</strong>. Objects with no dependencies are created first. Objects that reference them are created next. And so on up the chain.</p>
+<p>For a procurement chain:</p>
+<pre><code>Order  Object Type       Dependencies         API / Method
+─────────────────────────────────────────────────────────────────
+  1    Suppliers          None (leaf)          Business Partner API
+  2    Materials          None (leaf)          Product / Material API
+  3    Purchase Orders    Suppliers + Materials Purchase Order API
+  4    Goods Receipts     Purchase Orders      Material Document API
+  5    Invoices           GRs + Suppliers      Invoice Verification API
+  6    Payments           Invoices             Payment API
+</code></pre>
+<p>Within each level, records can be processed in parallel — all suppliers can be created simultaneously, because no supplier depends on another supplier. But across levels, the ordering is strict: no purchase order can be created until its supplier and materials exist.</p>
+<p>This ordering is not a recommendation. It is a structural constraint enforced by the target system's referential integrity. Violate it and the system rejects the record. Respect it and the chain is built correctly from the foundation up.</p>
+<hr />
+<h2>What this means for your migration</h2>
+<p>If your migration programme is organised by object type rather than by dependency chain, you may be building the upper floors before the foundation is complete. This is not a criticism of the programme team — it is a structural risk that most planning approaches do not account for, because most planning is done in spreadsheets, not in graphs.</p>
+<p>The questions worth asking:</p>
+<p><strong>Have we mapped the dependency chain for every object in scope?</strong> Not just which objects are included, but which objects they depend on — and whether those dependencies are also in scope.</p>
+<p><strong>Do we know the cascade impact of every known issue?</strong> If a supplier has a data quality problem, how many purchase orders does it affect? How many goods receipts? How many invoices? The blast radius of a single root-cause failure can be enormous, and it is invisible without chain-aware analysis.</p>
+<p><strong>Are we creating objects in the correct structural order?</strong> If suppliers are in Phase 1 and purchase orders are in Phase 3, is every supplier that Phase 3 needs actually included in Phase 1? Has anyone checked?</p>
+<p><strong>Are organisational assignments complete?</strong> A supplier record in the target is not the same as a usable supplier. The purchasing organisation, company code, payment terms, and reconciliation account all need to be present. A supplier that exists but lacks these assignments will block every PO that references it.</p>
+<p>These are structural questions, not data quality questions. They cannot be answered by profiling individual records. They require walking the chain.</p>
+<hr />
+<h2>How we approach this</h2>
+<p>At Migration Proof, dependency chain analysis is the second step in our pipeline — immediately after data ingestion, before any transformation is attempted. Our chain-walk engine expands a set of invoices into the full dependency graph: every goods receipt, every purchase order, every material, every supplier. It deduplicates shared dependencies (one supplier referenced by fifty POs is extracted once, not fifty times). It computes the creation order. And it identifies every point where the chain is incomplete — a missing supplier, a missing organisational assignment, a missing material plant record.</p>
+<p>When the bijective proof runs in the subsequent step, it operates on the full chain — not on isolated objects. A supplier that fails the proof is not just flagged as a supplier issue. Every PO, GR, and invoice that depends on it is automatically flagged with a cascade reference back to the root cause. The programme team does not need to trace the chain manually. The engine has already done it.</p>
+<p>The result is a dependency map that shows exactly which objects are safe, which are blocked, and which root-cause issues would unblock the most downstream objects if fixed first. Fix the supplier's country code, and twenty-nine objects that were blocked become unblocked. That is the kind of prioritisation that transforms a remediation effort from "fix everything" to "fix two things and seventy-five percent of your problems resolve."</p>
+<hr />
+<p>Our first release covers the full procurement chain — suppliers, materials, purchase orders, goods receipts, and invoices. These are the objects where dependency chains are longest and cascade failures hit hardest. From there, we will extend to finance, controlling, sales, and beyond.</p>
+<p>migrationproof.io is launching shortly. The next article in this series covers precondition validation — the formal gate that stops bad data before it enters the transformation pipeline.</p>
+<hr />
+    <div class="note-from-us">
+      <h2>A note from us</h2>
+      <p>Migration Proof is an AI-native operation. Five specialised AI personas run the chain walk, precondition checks, transformation, proof, and reporting. Behind them, twenty-five years of enterprise system experience shaped every rule they apply.</p>
+      <p>We are mostly agents — and we are proud of that, because agents prove every record, not a two percent sample. When you write to us, a human replies.</p>
+      <a href="mailto:hello@migrationproof.io" class="email">hello@migrationproof.io</a>
+      <p>We read every message. We reply to every question.</p>
+    </div>
+    <div class="series-nav">
+      <a href="/blog/bijective-proof/"><span class="label">← Previous</span>Bijective Proof</a>
+      <a href="/blog/five-ai-personas/" class="next"><span class="label">Next →</span>Five AI Personas</a>
+    </div>
+  </div>
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel" style="padding:22px"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a></div></div>
+  </div></footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>

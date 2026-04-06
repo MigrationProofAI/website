@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sample Intelligence Report — Migration Proof</title>
+  <meta name="description" content="See what a Migration Proof Intelligence Report looks like. Proof summary, per-field diagnosis, cascade impact, dependency chains, and Ownership Ledger." />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="canonical" href="https://migrationproof.io/sample-report/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px}
+    .muted{color:var(--muted)}
+    .hero{padding:120px 24px 40px;max-width:800px;margin:0 auto}
+    .hero h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;margin-bottom:16px;letter-spacing:-0.02em}
+    .hero .sub{font-size:1.15rem;color:var(--muted);line-height:1.6;margin-bottom:32px}
+    .dl-btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 24px;border-radius:14px;font-weight:600;font-size:1rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071018;transition:transform .18s;border:none;cursor:pointer;text-decoration:none}
+    .dl-btn:hover{transform:translateY(-1px)}
+    .sections{max-width:800px;margin:0 auto;padding:0 24px 80px}
+    .section{margin-bottom:40px}
+    .section h2{font-size:1.4rem;font-weight:700;margin-bottom:12px;color:var(--text)}
+    .section p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:1rem}
+    .score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+    .score-box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;text-align:center}
+    .score-box .num{font-size:2rem;font-weight:700;display:block}
+    .score-box .lbl{font-size:0.8rem;color:var(--muted);display:block;margin-top:4px}
+    .green{color:var(--accent)}.red{color:#f87171}.amber{color:#fbbf24}
+    .finding{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin:12px 0}
+    .finding h3{font-size:1.05rem;font-weight:600;margin-bottom:8px}
+    .finding .detail{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:0.9rem}
+    .finding .detail dt{color:var(--muted);font-weight:600}.finding .detail dd{margin:0}
+    .bar-wrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0}
+    .bar{height:32px;border-radius:8px;display:flex;overflow:hidden}
+    .bar .green-bar{background:var(--accent);width:75%}.bar .red-bar{background:#f87171;width:25%}
+    .proof-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+    .proof-col{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.85rem;line-height:1.8}
+    .proof-col h4{font-family:Inter,sans-serif;font-size:0.9rem;font-weight:600;margin-bottom:8px}
+    .match-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line)}
+    .match-row:last-child{border:none}
+    .check{color:var(--accent);font-weight:700}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    @media(max-width:768px){.score-grid{grid-template-columns:repeat(2,1fr)}.proof-row{grid-template-columns:1fr}.topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}.nav{width:100%;justify-content:space-between}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark">MP</div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+
+  <div class="hero">
+    <p class="muted" style="font-size:0.85rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">Sample output</p>
+    <h1>See what an Intelligence Report looks like</h1>
+    <p class="sub">This is a redacted sample using anonymised data from a real SAP ECC-to-S/4HANA migration assessment. 847 records. 5 object types. Full bijective proof. Every section below appears in the report your own data would generate.</p>
+    <a href="/sample-report/Sample_Intelligence_Report.pdf" class="dl-btn">Download the full sample PDF</a>
+  </div>
+
+  <div class="sections">
+
+    <div class="section">
+      <h2>1. Proof score at a glance</h2>
+      <p>Every record is tested individually. The proof score is a mathematical count, not a statistical estimate.</p>
+      <div class="score-grid">
+        <div class="score-box"><span class="num">847</span><span class="lbl">Total records</span></div>
+        <div class="score-box"><span class="num green">799</span><span class="lbl">Proven lossless</span></div>
+        <div class="score-box"><span class="num red">48</span><span class="lbl">Untransformable</span></div>
+        <div class="score-box"><span class="num green">94.3%</span><span class="lbl">Proof score</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2. Per-field diagnosis</h2>
+      <p>Each untransformable record is diagnosed to the exact field, exact value, and exact remediation. Not "investigate further" — specific, actionable findings.</p>
+
+      <div class="finding" style="border-left:3px solid #f87171">
+        <h3>Finding 1 — Supplier 100456 <span style="color:#f87171">[Priority 1]</span></h3>
+        <dl class="detail">
+          <dt>Field</dt><dd>COUNTRY</dd>
+          <dt>Value</dt><dd>UK</dd>
+          <dt>Issue</dt><dd>Not valid ISO 3166-1 alpha-2. Correct code is GB.</dd>
+          <dt>Proof</dt><dd>f⁻¹(f(x)) ≠ x — roundtrip recovers GB, not UK</dd>
+          <dt>Remediation</dt><dd>Correct to GB in source system</dd>
+          <dt>Cascade</dt><dd>12 POs + 8 GRs + 8 invoices blocked (29 objects)</dd>
+        </dl>
+      </div>
+
+      <div class="finding" style="border-left:3px solid #f87171">
+        <h3>Finding 2 — Supplier 100891 <span style="color:#f87171">[Priority 2]</span></h3>
+        <dl class="detail">
+          <dt>Field</dt><dd>PAY_TERMS</dd>
+          <dt>Value</dt><dd>ZCUS</dd>
+          <dt>Issue</dt><dd>Custom payment term, no target equivalent</dd>
+          <dt>Remediation</dt><dd>Map to ZN60 or create ZCUS in target config</dd>
+          <dt>Cascade</dt><dd>3 POs + 2 GRs + 2 invoices blocked (7 objects)</dd>
+        </dl>
+      </div>
+
+      <div class="finding" style="border-left:3px solid #fbbf24">
+        <h3>Finding 3 — Material MAT-2281 <span style="color:#fbbf24">[Low priority]</span></h3>
+        <dl class="detail">
+          <dt>Field</dt><dd>BASE_UOM</dd>
+          <dt>Value</dt><dd>PCS</dd>
+          <dt>Issue</dt><dd>Not recognised ISO unit of measure</dd>
+          <dt>Remediation</dt><dd>Map PCS to EA (ISO standard)</dd>
+          <dt>Cascade</dt><dd>Self only</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>3. Cascade impact — fix 2 records, resolve 75%</h2>
+      <p>Root cause failures cascade through the dependency chain. The blast radius analysis shows which fixes unblock the most downstream objects.</p>
+      <div class="bar-wrap">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.9rem">
+          <span><strong>36 resolved</strong> (fix 2 records)</span>
+          <span class="muted">12 remaining</span>
+        </div>
+        <div class="bar"><div class="green-bar"></div><div class="red-bar"></div></div>
+        <p style="margin-top:12px;font-size:0.9rem;color:var(--muted)">Fix Supplier 100456 (COUNTRY=UK→GB) and Supplier 100891 (PAY_TERMS=ZCUS→ZN60). Two corrections. 75% of all failures resolved.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>4. Bijective proof — the roundtrip</h2>
+      <p>For every proven record, the engine runs: forward transform → inverse transform → field-by-field comparison. Here is what that looks like on a real supplier.</p>
+      <div class="proof-row">
+        <div class="proof-col" style="border-left:3px solid var(--accent-2)">
+          <h4>Source (ECC)</h4>
+          LIFNR 0000100234<br>NAME1 Mueller Ind.<br>LAND1 DE<br>BUKRS 1000<br>ZTERM NET30<br>AKONT 160000<br>EKORG 1000<br>KTOKK KRED
+        </div>
+        <div class="proof-col" style="border-left:3px solid #a78bfa">
+          <h4>Target (S/4HANA)</h4>
+          BP    100234<br>Name  Mueller Ind.<br>Ctry  DE<br>CoCd  1710 ⚡<br>PayT  ZN30 ⚡<br>Recon 160000<br>POrg  1710 ⚡<br>Grp   KRED
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px;border-left:3px solid var(--accent)">
+        <h4 style="margin-bottom:12px;font-size:0.95rem">Field-by-field comparison — all 8 fields match</h4>
+        <div class="match-row"><span>LIFNR</span><span>0000100234 = 0000100234</span><span class="check">✓</span></div>
+        <div class="match-row"><span>NAME1</span><span>Mueller Ind. = Mueller Ind.</span><span class="check">✓</span></div>
+        <div class="match-row"><span>LAND1</span><span>DE = DE</span><span class="check">✓</span></div>
+        <div class="match-row"><span>BUKRS</span><span>1000 → 1710 → 1000</span><span class="check">✓</span></div>
+        <div class="match-row"><span>ZTERM</span><span>NET30 → ZN30 → NET30</span><span class="check">✓</span></div>
+        <div class="match-row"><span>AKONT</span><span>160000 = 160000</span><span class="check">✓</span></div>
+        <div class="match-row"><span>EKORG</span><span>1000 → 1710 → 1000</span><span class="check">✓</span></div>
+        <div class="match-row"><span>KTOKK</span><span>KRED = KRED</span><span class="check">✓</span></div>
+        <p style="margin-top:12px;font-weight:700;color:var(--accent)">f⁻¹(f(x)) ≡ x — proven lossless</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>5. Ownership Ledger</h2>
+      <p>Every tested record is logged with a cryptographic hash and timestamp. This is the audit trail that programme boards, auditors, and regulators can independently verify.</p>
+      <div class="card" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;line-height:2;overflow-x:auto">
+        <div class="match-row"><span>LIFNR 0000100234</span><span>Supplier</span><span class="check">PROVEN</span><span>a7f3e291b4c8d0e5</span></div>
+        <div class="match-row"><span>LIFNR 0000100567</span><span>Supplier</span><span class="check">PROVEN</span><span>c9d2f4a8e6b1c3d7</span></div>
+        <div class="match-row"><span>MATNR MAT-9921</span><span>Material</span><span class="check">PROVEN</span><span>e1b5d8f2a4c6e9b3</span></div>
+        <div class="match-row"><span>LIFNR 0000100456</span><span>Supplier</span><span style="color:#f87171;font-weight:700">FAILED</span><span>—</span></div>
+        <div class="match-row"><span>EBELN 4500017892</span><span>PO</span><span style="color:#fbbf24;font-weight:700">CASCADE</span><span>—</span></div>
+      </div>
+    </div>
+
+    <div class="section" style="text-align:center;padding:40px 0">
+      <h2>Run this on your own data</h2>
+      <p style="max-width:600px;margin:0 auto 24px">This is a sample. The real value is seeing your own records — your own untransformables, your own cascade impacts, your own proof scores.</p>
+      <a href="mailto:hello@migrationproof.io" class="dl-btn">hello@migrationproof.io</a>
+      <p style="margin-top:16px;font-size:0.9rem">We read every message. We reply to every question.</p>
+      <p style="margin-top:8px"><a href="/sample-report/Sample_Intelligence_Report.pdf" style="color:var(--accent)">Download the full sample PDF →</a></p>
+    </div>
+
+  </div>
+
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/about/">About</a></div></div>
+  </div></footer>
+
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>
