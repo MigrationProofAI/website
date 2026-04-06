@@ -35,7 +35,7 @@
 
 | # | Task | Category | Buyer question | Status |
 |---|---|---|---|---|
-| 21 | Set canonical URL on Medium Article 1 → migrationproof.io | SEO | Authority concentration | TODO |
+| 21 | Set canonical URL on Medium Article 1 → migrationproof.io | SEO | Authority concentration | DONE |
 | 22 | Pricing page /pricing/ | Trust page | How do I buy it? | TODO |
 | 23 | PO displacement — read $metadata + GET reference | Engineering | Is it real? | TODO |
 | 24 | PO displacement — forward + inverse transform pairs | Engineering | Is it real? | TODO |
@@ -97,13 +97,6 @@
 | 52 | AWS/Azure Marketplace listing | Partnership | TODO |
 
 ---
-
-## 🏡 PERSONAL
-
-| # | Task | Target | Status |
-|---|---|---|---|
-| 53 | Smallholding — Cornwall | Month 6-9 | TODO |
-| 54 | Leave day job — go fully visible | When runway = £1.5-2M | TODO |
 
 ---
 
