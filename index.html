@@ -3,149 +3,175 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Migration Proof — Prove the Transformation</title>
-  <meta name="description" content="We prove data transformations are lossless — mathematically, not statistically. Bijective proof on every record. f⁻¹(f(x)) ≡ x." />
-  <meta property="og:title" content="Migration Proof — Maths, not art" />
-  <meta property="og:description" content="We prove data transformations are lossless. Bijective proof on every record." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://migrationproof.io" />
-  <link rel="canonical" href="https://migrationproof.io" />
+  <title>Security & Data Handling — Migration Proof</title>
+  <meta name="description" content="How Migration Proof handles your data. Read-only extractor, ephemeral tenants, encryption, retention, deletion, and Destruction Certificate." />
   <link rel="icon" type="image/png" href="/images/favicon-32.png" />
   <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/security/" />
   <style>
     :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
     body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}
-    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
     body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
-    a{color:inherit;text-decoration:none}.container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
     .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
     .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
-    .brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:0.02em}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;overflow:hidden}
+    .brand-mark img{width:100%;height:100%;object-fit:cover}
     .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
     .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
-    .hero{padding:72px 0 40px}.hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:32px;align-items:stretch}
-    .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--panel-2);color:var(--muted);font-size:0.86rem;margin-bottom:22px}
-    .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px rgba(130,230,181,0.6)}
-    h1{margin:0 0 16px;font-size:clamp(2.7rem,6vw,5.2rem);line-height:0.96;letter-spacing:-0.04em;max-width:14ch}
-    .lead{color:var(--muted);font-size:1.08rem;line-height:1.7;max-width:62ch;margin:0 0 30px}
-    .formula{font-family:'JetBrains Mono','Fira Code',monospace;font-size:1.4rem;color:var(--accent);margin:0 0 30px;letter-spacing:2px;opacity:0.85}
-    .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:34px}
-    .button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 18px;border-radius:14px;border:1px solid var(--line);font-weight:600;transition:transform .18s}.button:hover{transform:translateY(-1px)}
-    .button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071018;border:none}.button.secondary{background:var(--panel-2);color:var(--text)}
-    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:680px}.stat{padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.stat strong{display:block;font-size:1.35rem;margin-bottom:4px}.stat span{color:var(--muted);font-size:0.92rem;line-height:1.5}
-    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
-    .hero-panel{padding:26px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative;min-height:540px}.hero-panel::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.04),transparent 35%);pointer-events:none}
-    .panel-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:26px}.panel-title h3{margin:0;font-size:1rem}
-    .badge{padding:8px 12px;border-radius:999px;font-size:0.8rem;color:var(--muted);border:1px solid var(--line);background:var(--panel-2)}
-    .flow{display:grid;gap:14px;margin-bottom:22px}.flow-step{padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,0.025)}body.light .flow-step{background:rgba(255,255,255,0.7)}
-    .flow-step small,.quote small,.article small,.method-card small,footer small{display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px}
-    .flow-step strong,.method-card strong,.article strong,.quote strong{display:block;font-size:1.05rem;margin-bottom:6px}
-    .flow-step p,.method-card p,.article p,.quote p,footer p{margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem}
-    .flow-arrow{text-align:center;color:var(--accent);font-size:1.1rem;line-height:1}
-    .quote{padding:18px;border-radius:20px;background:linear-gradient(135deg,rgba(130,230,181,0.08),rgba(125,184,255,0.08));border:1px solid var(--line)}
-    section{padding:28px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:20px}.section-head h2{margin:0 0 8px;font-size:clamp(1.5rem,2.7vw,2.35rem);letter-spacing:-0.03em}.section-head p{margin:0;color:var(--muted);max-width:70ch;line-height:1.7}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .method-card,.article,.mini-panel,.footer-panel{padding:22px}
-    .article{display:flex;flex-direction:column;gap:14px;min-height:250px;cursor:pointer;transition:border-color .2s}.article:hover{border-color:var(--accent)}
-    .article .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
-    .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);font-size:0.78rem;color:var(--muted);background:var(--panel-2)}
-    .series-layout{display:grid;grid-template-columns:1.2fr 0.8fr;gap:18px;align-items:stretch}
-    .series-main{padding:26px}.series-list{display:grid;gap:12px;margin-top:18px}
-    .series-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line)}.series-item:first-child{border-top:none;padding-top:0}
-    .series-no{min-width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--panel-2);border:1px solid var(--line);font-weight:700;color:var(--accent)}
-    .series-item a{color:var(--text);transition:color .2s}.series-item a:hover{color:var(--accent)}
-    .mini-panel{display:grid;gap:14px}.cta-footer{padding:34px 0 56px}
-    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}
-    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a:hover{color:var(--text)}
     .muted{color:var(--muted)}
-    @media(max-width:1080px){.hero-grid,.series-layout,.grid-3{grid-template-columns:1fr}h1{max-width:none}.hero-panel{min-height:auto}}
-    @media(max-width:720px){.topbar-inner,.section-head,.footer-panel{align-items:flex-start}.topbar-inner{flex-direction:column;padding:14px 0}.nav{width:100%;justify-content:space-between}.stats{grid-template-columns:1fr}.hero{padding-top:44px}}
+    .hero{padding:120px 24px 40px;max-width:800px;margin:0 auto}
+    .hero h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;margin-bottom:16px;letter-spacing:-0.02em}
+    .hero .sub{font-size:1.15rem;color:var(--muted);line-height:1.6;margin-bottom:32px}
+    .content{max-width:800px;margin:0 auto;padding:0 24px 80px}
+    .content h2{font-size:1.4rem;font-weight:700;margin-top:48px;margin-bottom:16px;padding-top:24px;border-top:1px solid var(--line)}
+    .content h2:first-child{margin-top:0;padding-top:0;border:none}
+    .content p{color:var(--muted);line-height:1.7;margin-bottom:16px;font-size:1rem}
+    .content strong{color:var(--text)}
+    .sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:24px 0}
+    .sec-item{display:flex;gap:12px;align-items:start;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+    .sec-item .icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+    .sec-item h3{font-size:1rem;font-weight:600;margin-bottom:4px;color:var(--text)}
+    .sec-item p{font-size:0.9rem;margin:0}
+    .lifecycle{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:24px 0}
+    .lc-step{text-align:center;padding:16px 8px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+    .lc-step .num{font-size:1.4rem;font-weight:700;color:var(--accent);display:block;margin-bottom:4px}
+    .lc-step .label{font-size:0.78rem;color:var(--muted);line-height:1.3}
+    .lc-arrow{display:none}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    @media(max-width:768px){
+      .sec-grid{grid-template-columns:1fr}
+      .lifecycle{grid-template-columns:1fr}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+    }
   </style>
 </head>
 <body>
   <header class="topbar"><div class="container topbar-inner">
-    <a class="brand" href="/"><div class="brand-mark"><img src="/images/mp-icon.png" alt="MP" style="width:100%;height:100%;object-fit:cover"></div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <a class="brand" href="/"><div class="brand-mark"><img src="/images/mp-icon.png" alt="MP"></div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
     <nav class="nav"><a href="/diagnostic/">Diagnostic</a><a href="/sample-report/">Sample Report</a><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
   </div></header>
-  <main id="top">
-    <section class="hero"><div class="container hero-grid"><div>
-      <div class="eyebrow"><span class="dot"></span>Launching shortly — SAP S/4HANA first, then everywhere</div>
-      <h1>Prove the transformation. Not just the load.</h1>
-      <p class="lead">We test whether every record survives transformation — not by sampling, not by loading, but by running the inverse function on every field of every record and comparing. If the roundtrip recovers the original, the migration is proven. If it does not, we tell you exactly what was lost.</p>
-      <div class="formula">f⁻¹(f(x)) ≡ x</div>
-      <div class="hero-actions"><a class="button primary" href="/diagnostic/">Run the diagnostic</a><a class="button secondary" href="/sample-report/">See sample report</a></div>
-      <div class="stats">
-        <div class="stat"><strong>100%</strong><span>Every record tested. Not a 2% sample. Not a representative subset. Every single one.</span></div>
-        <div class="stat"><strong>Per-field</strong><span>Every failure diagnosed to the exact field, exact value, and exact remediation action.</span></div>
-        <div class="stat"><strong>Self-verifying</strong><span>The inverse function is there. Anyone can check the proof. Trust the mathematics, not the vendor.</span></div>
-      </div>
-    </div>
-    <aside class="card hero-panel"><div>
-      <div class="panel-title"><h3>The bijective proof</h3><span class="badge">How it works</span></div>
-      <div class="flow">
-        <div class="flow-step"><small>Step 1</small><strong>Source record</strong><p>Capture the original: vendor ID, name, country, company code, payment terms, purchasing org — every field with its full semantics.</p></div>
-        <div class="flow-arrow">↓ f(x)</div>
-        <div class="flow-step"><small>Step 2</small><strong>Forward transformation</strong><p>Transform to target format. Fields renamed, values mapped (BUKRS 1000 → 1710, ZTERM NET30 → ZN30), structure converted to target API.</p></div>
-        <div class="flow-arrow">↓ f⁻¹(y)</div>
-        <div class="flow-step"><small>Step 3</small><strong>Inverse reconstruction</strong><p>Apply the reverse function. Target values mapped back. If 1710 → 1000, ZN30 → NET30, leading zeros restored — reconstruct the source.</p></div>
-        <div class="flow-arrow">↓ compare</div>
-        <div class="flow-step"><small>Step 4</small><strong>Field-by-field comparison</strong><p>If recovered ≡ original for every field: proven lossless. If any field diverges: untransformable — diagnosed with exact cause and remediation.</p></div>
-      </div>
-    </div>
-    <div class="quote"><small>The principle</small><strong>Cutover confidence should come from proof, not optimism.</strong><p>A mapping is a hypothesis. A bijective proof is a mathematical fact. The dashboard tells you how far you have come. The proof tells you whether you will succeed.</p></div>
-    </aside></div></section>
 
-    <section id="pillars"><div class="container">
-      <div class="section-head"><div><h2>Three pillars of transformation integrity</h2><p>Migration safety is not mapping coverage. It is the answer to a harder question: does everything survive?</p></div></div>
-      <div class="grid-3">
-        <article class="card method-card"><small>Pillar 1</small><strong>Lossless</strong><p>No information discarded. If two distinct source values exist, two distinct target values must exist. Every distinction preserved. The roundtrip recovers the original exactly.</p></article>
-        <article class="card method-card"><small>Pillar 2</small><strong>Reversible</strong><p>Every transformation has an inverse. Apply forward, apply inverse, compare. If f⁻¹(f(x)) ≡ x, the transformation is proven correct — not probably correct, but provably correct.</p></article>
-        <article class="card method-card"><small>Pillar 3</small><strong>Chain-complete</strong><p>Every record has its dependencies present and proven. Supplier before PO. PO before GR. GR before invoice. Break the chain and the target system rejects the record.</p></article>
-      </div>
-    </div></section>
+  <div class="hero">
+    <p class="muted" style="font-size:0.85rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">Security & data handling</p>
+    <h1>Your data is processed, proven, and destroyed</h1>
+    <p class="sub">Migration Proof is a read-only diagnostic. We never write to your systems. Your data is processed in an isolated ephemeral tenant, and destroyed after delivery. Here is exactly how.</p>
+  </div>
 
-    <section id="articles"><div class="container">
-      <div class="section-head"><div><h2>Featured articles</h2><p>The transformation integrity series — ten articles on why migration assessments measure the wrong thing, and what to measure instead.</p></div></div>
-      <div class="grid-3">
-        <a href="/blog/98-percent-problem/" class="card article"><small>Article 1 · April 2026</small><strong>Migration Assessments Test 2% of Your Data. The Other 98% Arrives on Cutover Weekend.</strong><p>Your programme dashboard is green. Your data hasn't been tested. Here's what that means.</p><div class="meta"><span class="pill">Sampling risk</span><span class="pill">Cutover</span><span class="pill">Series opener</span></div></a>
-        <a href="/blog/bijective-proof/" class="card article"><small>Article 2 · April 2026</small><strong>Bijective Proof: The Mathematical Framework Your Data Migration Is Missing</strong><p>Every system migration transforms data. Almost none prove the transformation is correct.</p><div class="meta"><span class="pill">Bijection</span><span class="pill">Mathematics</span><span class="pill">Python</span></div></a>
-        <a href="/blog/dependency-chains/" class="card article"><small>Article 3 · April 2026</small><strong>The Dependency Chain Problem</strong><p>A record that loads successfully is not the same as a record that works.</p><div class="meta"><span class="pill">Dependencies</span><span class="pill">Cascade failure</span></div></a>
-      </div>
-    </div></section>
+  <div class="content">
 
-    <section id="series"><div class="container series-layout">
-      <div class="card series-main"><small>The full series</small>
-        <h2 style="margin:0 0 6px;font-size:2rem;letter-spacing:-0.03em">Ten articles. One argument.</h2>
-        <p class="muted" style="margin:0;line-height:1.7;max-width:68ch">Each article stands alone. Together they build the case for why transformation integrity — not mapping coverage — is the measure that predicts cutover success.</p>
-        <div class="series-list">
-          <div class="series-item"><div class="series-no">01</div><div><a href="/blog/98-percent-problem/"><strong>The 98% problem</strong></a><p class="muted">Why sampling misses the failures that matter most.</p></div></div>
-          <div class="series-item"><div class="series-no">02</div><div><a href="/blog/bijective-proof/"><strong>Bijective proof</strong></a><p class="muted">The mathematical framework for proving transformations are lossless.</p></div></div>
-          <div class="series-item"><div class="series-no">03</div><div><a href="/blog/dependency-chains/"><strong>Dependency chains</strong></a><p class="muted">Why migrated data arrives intact but operationally dead.</p></div></div>
-          <div class="series-item"><div class="series-no">04</div><div><a href="/blog/five-ai-personas/"><strong>Five AI personas</strong></a><p class="muted">How AI-native assessment replaces six months of consulting.</p></div></div>
-          <div class="series-item"><div class="series-no">05</div><div><a href="/blog/95-percent-mapped/"><strong>95% mapped ≠ safe</strong></a><p class="muted">Why mapping coverage is a progress metric, not a safety metric.</p></div></div>
-          <div class="series-item"><div class="series-no">06</div><div><a href="/blog/what-migration-costs/"><strong>What migration costs</strong></a><p class="muted">The economics of mathematical assessment vs. manual consulting.</p></div></div>
-          <div class="series-item"><div class="series-no">07</div><div><a href="/blog/untransformable-report/"><strong>The untransformable report</strong></a><p class="muted">Why failed records are your most valuable finding.</p></div></div>
-          <div class="series-item"><div class="series-no">08</div><div><a href="/blog/after-go-live/"><strong>After go-live</strong></a><p class="muted">What happens to data quality when the migration team leaves.</p></div></div>
-          <div class="series-item"><div class="series-no">09</div><div><a href="/blog/catastrophe-theory/"><strong>Catastrophe theory</strong></a><p class="muted">The mathematics of why big-bang migrations are structurally fragile.</p></div></div>
-          <div class="series-item"><div class="series-no">10</div><div><a href="/blog/prove-before-loading/"><strong>Prove before loading</strong></a><p class="muted">The case for reversing the industry-standard order of operations.</p></div></div>
+    <h2>The extractor is read-only</h2>
+
+    <div class="sec-grid">
+      <div class="sec-item">
+        <span class="icon">🔒</span>
+        <div>
+          <h3>Display-level only</h3>
+          <p>The ABAP extractor requires only display authorisation on procurement tables (EKKO, EKPO, LFA1, MARA, etc). No write access. No transport requests. No system modifications.</p>
         </div>
       </div>
-      <aside class="card mini-panel">
-        <div style="padding:22px"><small>Who we are</small><strong>AI-native. Maths-first. Human where it matters.</strong><p>Five specialised AI personas run the chain walk, precondition checks, transformation, bijective proof, and report assembly. They work autonomously. They do not attend workshops. They run mathematics.</p><p style="margin-top:12px">Behind the agents, twenty-five years of enterprise system experience shaped the mapping kernel. When you write to us, a human reads your message and a human replies.</p></div>
-        <div style="padding:22px"><small>What is coming</small><strong>Procurement chain first. Then everything.</strong><p>First release: suppliers, materials, purchase orders, goods receipts, invoices — SAP ECC-to-S/4HANA. Then full S/4HANA. Then Oracle, Dynamics, and beyond. The mathematics is system-agnostic.</p></div>
-        <div style="padding:22px"><small>Our code of conduct</small><p>We lead with our strength. We never target competitors. We never exploit another vendor's weakness. We present the standard we believe in and let the reader draw every conclusion.</p></div>
-      </aside>
-    </div></section>
+      <div class="sec-item">
+        <span class="icon">📄</span>
+        <div>
+          <h3>You run it, not us</h3>
+          <p>You execute the report in your own system using SE38. We never connect to your ECC or S/4HANA. We never have credentials to your system. The extractor produces a flat file that you choose to upload.</p>
+        </div>
+      </div>
+      <div class="sec-item">
+        <span class="icon">👁️</span>
+        <div>
+          <h3>Inspect it first</h3>
+          <p>The extractor source code is provided to you. Your security team can review every line of ABAP before it runs. There are no hidden calls, no external connections, no data exfiltration.</p>
+        </div>
+      </div>
+      <div class="sec-item">
+        <span class="icon">🚫</span>
+        <div>
+          <h3>No production writes</h3>
+          <p>The diagnostic is entirely read-only. It reads your source data, proves the transformation, and reports the result. At no point does any process write to your source or target system.</p>
+        </div>
+      </div>
+    </div>
 
-    <section id="contact"><div class="container">
-      <div class="card footer-panel" style="padding:28px"><div><strong style="display:block;font-size:1.55rem;margin-bottom:8px">The mathematics is the brand. The proof is the product.</strong><p class="muted" style="margin:0;max-width:72ch">If anything in our articles resonates — or if you just want to talk about your programme — we would genuinely like to hear from you. We read every message. We reply to every question.</p></div><a class="button primary" href="mailto:hello@migrationproof.io">hello@migrationproof.io</a></div>
-    </div></section>
-  </main>
+    <h2>Ephemeral tenant lifecycle</h2>
 
-  <footer class="cta-footer"><div class="container">
-    <div class="card footer-panel" style="padding:22px"><div><small>Migration Proof</small><p>Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
-    <div class="footer-links"><a href="#top">Top</a><a href="/diagnostic/">Diagnostic</a><a href="/sample-report/">Sample Report</a><a href="/blog/">Articles</a><a href="/about/">About</a></div></div>
+    <p>Your data is processed in a dedicated, isolated tenant. No other customer's data shares the same schema. The tenant follows a strict five-phase lifecycle:</p>
+
+    <div class="lifecycle">
+      <div class="lc-step"><span class="num">1</span><span class="label">Provision</span></div>
+      <div class="lc-step"><span class="num">2</span><span class="label">Ingest</span></div>
+      <div class="lc-step"><span class="num">3</span><span class="label">Process</span></div>
+      <div class="lc-step"><span class="num">4</span><span class="label">Deliver</span></div>
+      <div class="lc-step"><span class="num">5</span><span class="label">Destroy</span></div>
+    </div>
+
+    <p><strong>Provision:</strong> A dedicated PostgreSQL schema is created for your engagement. Complete isolation — no shared tables, no shared connections, no cross-tenant access.</p>
+    <p><strong>Ingest:</strong> Your uploaded extract is loaded into the isolated schema. Data is encrypted in transit (TLS 1.2+) and at rest (AES-256).</p>
+    <p><strong>Process:</strong> The proof engine runs the bijective test on every record within the isolated tenant. Forward transform, inverse transform, field-by-field comparison. Results are generated.</p>
+    <p><strong>Deliver:</strong> The Intelligence Report is generated and delivered to you. The Ownership Ledger with cryptographic hashes is included.</p>
+    <p><strong>Destroy:</strong> After the retention window (7 days by default, configurable), the entire tenant schema is dropped. All tables, all data, all intermediate results. A <strong>Destruction Certificate</strong> is issued confirming the date, time, and scope of deletion.</p>
+
+    <h2>What we keep, what we don't</h2>
+
+    <div class="sec-grid">
+      <div class="sec-item" style="border-color:rgba(130,230,181,0.3)">
+        <span class="icon">✅</span>
+        <div>
+          <h3>What we keep (anonymised)</h3>
+          <p>Before destruction, anonymised statistical patterns are extracted into our knowledge graph. These are aggregate patterns — not your data. Examples: "12% of suppliers in manufacturing verticals have non-ISO country codes." No record-level data. No field values. No identifiers.</p>
+        </div>
+      </div>
+      <div class="sec-item" style="border-color:rgba(248,113,113,0.3)">
+        <span class="icon">🗑️</span>
+        <div>
+          <h3>What we destroy</h3>
+          <p>Your raw data. Your transformed data. Your proof results at the record level. Your field values. Your supplier names, PO numbers, material codes — everything identifiable. Gone. Destruction Certificate issued.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Encryption</h2>
+
+    <p><strong>In transit:</strong> All uploads and downloads use TLS 1.2 or higher. No unencrypted connections are accepted.</p>
+    <p><strong>At rest:</strong> Data stored in the ephemeral tenant is encrypted using AES-256. Encryption keys are tenant-specific and destroyed with the tenant.</p>
+
+    <h2>Access control</h2>
+
+    <p><strong>Who sees your data:</strong> The proof engine processes your data autonomously. Five AI personas (Beacon, Razor, Atlas, Prism, Maestro) handle chain discovery, precondition checking, transformation, proof, and reporting. They operate on the data programmatically.</p>
+    <p><strong>Human access:</strong> In the current operating model, the founder may review proof results to ensure report quality. This access is logged. As the platform matures toward full self-serve, human access to customer data will be eliminated entirely — the engine will operate without human involvement.</p>
+    <p><strong>No third-party access:</strong> Your data is not shared with any third party. It is not used to train language models. It is not sold. It is not transferred. It exists in your ephemeral tenant and nowhere else.</p>
+
+    <h2>PII and sensitive data</h2>
+
+    <p>The diagnostic requires procurement master data and transaction data — supplier names, material descriptions, PO numbers, and similar business records. It does not require personal employee data, salary information, social security numbers, or financial account credentials.</p>
+    <p>If your extract contains PII inadvertently (e.g. contact names on supplier records), it is processed within the ephemeral tenant and destroyed with everything else. We recommend excluding unnecessary PII fields from the extract where possible.</p>
+
+    <h2>Data residency</h2>
+
+    <p>Processing currently runs on European cloud infrastructure. If your organisation requires specific data residency guarantees (e.g. UK-only, EU-only, or specific cloud region), contact us and we will confirm whether your requirement can be met.</p>
+
+    <h2>Compliance</h2>
+
+    <p>Migration Proof is designed with GDPR principles in mind: data minimisation (we process only what the extract contains), purpose limitation (processing only for the diagnostic), storage limitation (ephemeral tenant with destruction), and transparency (this page, plus the Destruction Certificate).</p>
+    <p>We are a small, early-stage operation. We do not yet hold ISO 27001 or SOC 2 certification. We are transparent about this. What we do offer is architectural security by design — ephemeral tenants, tenant-specific encryption, destruction certificates, and read-only access to source systems. As we grow, formal certifications will follow.</p>
+
+    <h2>Questions</h2>
+
+    <p>If your security, InfoSec, or procurement team has questions about our data handling that are not answered here, contact us directly. We will answer every question honestly and in writing.</p>
+    <p><a href="mailto:hello@migrationproof.io" style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;color:var(--accent)">hello@migrationproof.io</a></p>
+    <p style="font-size:0.9rem">We read every message. We reply to every question.</p>
+
+  </div>
+
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/diagnostic/">Diagnostic</a><a href="/sample-report/">Sample Report</a><a href="/blog/">Articles</a><a href="/about/">About</a></div></div>
   </div></footer>
 
   <script>
