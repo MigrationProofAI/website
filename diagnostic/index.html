@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Run a Read-Only Diagnostic — Migration Proof</title>
+  <meta name="description" content="Run a bijective proof on your own migration data. Download the extractor, run it in your ECC system, upload the output. Intelligence Report in minutes, not months." />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/diagnostic/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem;overflow:hidden}
+    .brand-mark img{width:100%;height:100%;object-fit:cover}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .muted{color:var(--muted)}
+
+    /* Hero */
+    .hero{padding:120px 24px 40px;max-width:800px;margin:0 auto;text-align:center}
+    .hero h1{font-size:clamp(2rem,4.5vw,3rem);line-height:1.15;font-weight:700;margin-bottom:16px;letter-spacing:-0.02em}
+    .hero .sub{font-size:1.15rem;color:var(--muted);line-height:1.65;max-width:640px;margin:0 auto 32px}
+
+    /* Steps */
+    .steps{max-width:900px;margin:0 auto;padding:0 24px 40px}
+    .step{display:grid;grid-template-columns:80px 1fr;gap:24px;margin-bottom:40px;align-items:start}
+    .step-num{width:72px;height:72px;border-radius:20px;display:grid;place-items:center;font-size:1.8rem;font-weight:800;background:var(--panel);border:1px solid var(--line);color:var(--accent);box-shadow:var(--shadow)}
+    .step-content h2{font-size:1.4rem;font-weight:700;margin-bottom:8px}
+    .step-content p{color:var(--muted);line-height:1.7;margin-bottom:8px;font-size:1rem}
+    .step-content .detail{font-size:0.9rem;color:var(--muted);line-height:1.6}
+    .step-tag{display:inline-block;padding:4px 12px;border-radius:999px;font-size:0.78rem;font-weight:600;margin-bottom:12px}
+    .tag-green{background:rgba(130,230,181,0.15);color:var(--accent);border:1px solid rgba(130,230,181,0.3)}
+    .tag-blue{background:rgba(125,184,255,0.15);color:var(--accent-2);border:1px solid rgba(125,184,255,0.3)}
+    .tag-purple{background:rgba(167,139,250,0.15);color:#a78bfa;border:1px solid rgba(167,139,250,0.3)}
+
+    /* Connector line between steps */
+    .connector{width:2px;height:32px;background:var(--line);margin:0 auto;margin-left:35px}
+
+    /* What you get */
+    .deliverables{max-width:900px;margin:0 auto;padding:0 24px 60px}
+    .deliverables h2{font-size:1.6rem;font-weight:700;margin-bottom:24px;text-align:center}
+    .del-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .del-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);transition:border-color .2s}
+    .del-card:hover{border-color:var(--accent)}
+    .del-card .icon{font-size:2rem;margin-bottom:12px;display:block}
+    .del-card h3{font-size:1.1rem;font-weight:600;margin-bottom:8px}
+    .del-card p{color:var(--muted);font-size:0.9rem;line-height:1.6;margin:0}
+
+    /* Guarantees */
+    .guarantees{max-width:900px;margin:0 auto;padding:0 24px 60px}
+    .guarantees h2{font-size:1.4rem;font-weight:700;margin-bottom:20px;text-align:center}
+    .guar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .guar-item{display:flex;gap:12px;align-items:start;padding:16px 20px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+    .guar-item .check{font-size:1.2rem;color:var(--accent);flex-shrink:0;margin-top:2px}
+    .guar-item p{color:var(--muted);font-size:0.9rem;line-height:1.5;margin:0}
+    .guar-item strong{color:var(--text)}
+
+    /* Scope */
+    .scope{max-width:900px;margin:0 auto;padding:0 24px 60px}
+    .scope h2{font-size:1.4rem;font-weight:700;margin-bottom:20px;text-align:center}
+    .scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .scope-col{padding:20px 24px;border-radius:14px;border:1px solid var(--line)}
+    .scope-yes{background:rgba(130,230,181,0.06);border-color:rgba(130,230,181,0.2)}
+    .scope-soon{background:rgba(251,191,36,0.06);border-color:rgba(251,191,36,0.2)}
+    .scope-col h3{font-size:1rem;font-weight:600;margin-bottom:12px}
+    .scope-col ul{list-style:none;padding:0}
+    .scope-col li{padding:4px 0;font-size:0.9rem;color:var(--muted)}
+    .scope-col li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:10px;vertical-align:middle}
+    .scope-yes li::before{background:var(--accent)}
+    .scope-soon li::before{background:#fbbf24}
+
+    /* CTA */
+    .cta-section{max-width:700px;margin:0 auto;padding:0 24px 80px;text-align:center}
+    .cta-card{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:40px 32px;box-shadow:var(--shadow)}
+    .cta-card h2{font-size:1.5rem;font-weight:700;margin-bottom:12px}
+    .cta-card p{color:var(--muted);font-size:1rem;line-height:1.6;margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto}
+    .cta-btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 28px;border-radius:14px;font-weight:600;font-size:1.05rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071018;transition:transform .18s;border:none;cursor:pointer;text-decoration:none}
+    .cta-btn:hover{transform:translateY(-2px)}
+    .cta-secondary{display:inline-flex;align-items:center;gap:8px;margin-top:16px;color:var(--accent);font-size:0.95rem}
+
+    /* FAQ mini */
+    .faq{max-width:700px;margin:0 auto;padding:0 24px 60px}
+    .faq h2{font-size:1.4rem;font-weight:700;margin-bottom:20px;text-align:center}
+    .faq-item{padding:16px 0;border-bottom:1px solid var(--line)}
+    .faq-item:last-child{border:none}
+    .faq-item dt{font-weight:600;margin-bottom:6px;font-size:0.95rem}
+    .faq-item dd{color:var(--muted);font-size:0.9rem;line-height:1.6;margin:0}
+
+    /* Footer */
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+
+    @media(max-width:768px){
+      .step{grid-template-columns:60px 1fr;gap:16px}
+      .step-num{width:56px;height:56px;font-size:1.4rem;border-radius:16px}
+      .del-grid{grid-template-columns:1fr}
+      .guar-grid{grid-template-columns:1fr}
+      .scope-grid{grid-template-columns:1fr}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .connector{margin-left:27px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark"><img src="/images/mp-icon.png" alt="MP"></div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/sample-report/">Sample Report</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+
+  <div class="hero">
+    <p class="muted" style="font-size:0.85rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">Read-only diagnostic</p>
+    <h1>See your own data proven — or diagnosed</h1>
+    <p class="sub">Three steps. No consultants. No workshops. No months of elapsed time. Upload your data extract and receive a per-record bijective proof with every failure diagnosed to the exact field, value, and remediation.</p>
+  </div>
+
+  <!-- THREE STEPS -->
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <span class="step-tag tag-green">Your system — 10 minutes</span>
+        <h2>Download and run the extractor</h2>
+        <p>We provide a short ABAP report that reads your ECC procurement data. You execute it in SE38 with display-level authorisation only.</p>
+        <p class="detail"><strong>What it does:</strong> You select a starting set — for example, 100 invoices. The extractor automatically walks the dependency chain, discovering every related goods receipt, purchase order, material, and supplier. Output: a single structured file.</p>
+        <p class="detail"><strong>What it doesn't do:</strong> No writes. No transports. No system modifications. No access to production data beyond display-level read. The extractor is read-only by design.</p>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <span class="step-tag tag-blue">migrationproof.io — 2 minutes</span>
+        <h2>Upload the extract</h2>
+        <p>Upload the output file to migrationproof.io. Your data is processed in an ephemeral tenant — isolated, encrypted, and automatically destroyed after delivery.</p>
+        <p class="detail"><strong>Ephemeral processing:</strong> A dedicated schema is provisioned for your data. No other customer's data shares the same space. After your report is delivered and a retention window expires, the tenant is destroyed and a Destruction Certificate is issued.</p>
+        <p class="detail"><strong>What we learn (anonymously):</strong> Before destruction, anonymised statistical patterns — not your data — are extracted into our knowledge graph. This makes every future assessment richer. Your data is gone. The pattern remains. See <a href="/security/">Security & Data Handling</a> for full details.</p>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <span class="step-tag tag-purple">Your inbox — minutes, not months</span>
+        <h2>Receive the Intelligence Report</h2>
+        <p>The proof engine runs the full bijective test on every record: forward transform, inverse transform, field-by-field comparison. Every record is either proven lossless or diagnosed as untransformable.</p>
+        <p class="detail"><strong>What you receive:</strong> An Intelligence Report containing the proof summary by object type, per-field diagnosis for every untransformable record, cascade impact analysis with blast-radius prioritisation, dependency chain verification, and an Ownership Ledger with cryptographic hashes.</p>
+        <p class="detail"><a href="/sample-report/">See what the report looks like →</a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WHAT YOU GET -->
+  <div class="deliverables">
+    <h2>What you receive</h2>
+    <div class="del-grid">
+      <div class="del-card">
+        <span class="icon">📊</span>
+        <h3>Intelligence Report</h3>
+        <p>Proof score by object type. Top untransformable findings with per-field diagnosis. Cascade impact showing which fixes unblock the most downstream objects. Remediation priorities.</p>
+      </div>
+      <div class="del-card">
+        <span class="icon">🔐</span>
+        <h3>Ownership Ledger</h3>
+        <p>Every record logged with proof result, cryptographic hash, and timestamp. The audit trail your programme board, auditor, or regulator needs. Independently verifiable.</p>
+      </div>
+      <div class="del-card">
+        <span class="icon">✅</span>
+        <h3>Remediation Checklist</h3>
+        <p>Prioritised list of actions ranked by blast radius. Which records to fix, which field, what value to change, and how many downstream objects each fix unblocks.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUARANTEES -->
+  <div class="guarantees">
+    <h2>What we guarantee</h2>
+    <div class="guar-grid">
+      <div class="guar-item">
+        <span class="check">✓</span>
+        <p><strong>Read-only.</strong> The extractor never writes to your system. Display-level authorisation only. No transports. No modifications.</p>
+      </div>
+      <div class="guar-item">
+        <span class="check">✓</span>
+        <p><strong>100% coverage.</strong> Every record is tested. Not a 2% sample. Not a representative subset. Every supplier, material, PO, GR, and invoice in your extract.</p>
+      </div>
+      <div class="guar-item">
+        <span class="check">✓</span>
+        <p><strong>Per-field diagnosis.</strong> Every failure is diagnosed to the exact field, exact value, and specific remediation. No ambiguity. No "investigate further."</p>
+      </div>
+      <div class="guar-item">
+        <span class="check">✓</span>
+        <p><strong>Self-verifying.</strong> The inverse function is included. Anyone can run the roundtrip and check the proof independently. Trust the mathematics, not the vendor.</p>
+      </div>
+      <div class="guar-item">
+        <span class="check">✓</span>
+        <p><strong>Ephemeral processing.</strong> Your data is processed in an isolated tenant. After delivery, the tenant is destroyed. Destruction Certificate issued.</p>
+      </div>
+      <div class="guar-item">
+        <span class="check">✓</span>
+        <p><strong>No lock-in.</strong> The Intelligence Report is yours. Use it however you want — share it with your SI, your programme board, your auditor. No ongoing contract required.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCOPE -->
+  <div class="scope">
+    <h2>Current coverage</h2>
+    <div class="scope-grid">
+      <div class="scope-col scope-yes">
+        <h3 style="color:var(--accent)">Supported now</h3>
+        <ul>
+          <li>SAP ECC 6.0+ → S/4HANA 2020+</li>
+          <li>Suppliers / Business Partners</li>
+          <li>Materials / Products</li>
+          <li>Purchase Orders</li>
+          <li>Goods Receipts</li>
+          <li>Invoices</li>
+          <li>Full dependency chain verification</li>
+          <li>Cascade impact analysis</li>
+        </ul>
+      </div>
+      <div class="scope-col scope-soon">
+        <h3 style="color:#fbbf24">On the roadmap</h3>
+        <ul>
+          <li>FI/CO (GL accounts, cost centres)</li>
+          <li>SD (sales orders, deliveries)</li>
+          <li>HR / HCM</li>
+          <li>Custom Z-tables</li>
+          <li>Oracle sources</li>
+          <li>Dynamics sources</li>
+          <li>Payments</li>
+          <li>Multi-source migrations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <h2>Common questions</h2>
+    <dl>
+      <div class="faq-item">
+        <dt>How long does the extractor take to run?</dt>
+        <dd>Typically under 10 minutes for 100 invoices (which expands to 800-1,000 related objects across the dependency chain).</dd>
+      </div>
+      <div class="faq-item">
+        <dt>Do you need access to our system?</dt>
+        <dd>No. You run the extractor yourself. We never connect to your system. We only see the output file you upload.</dd>
+      </div>
+      <div class="faq-item">
+        <dt>What if we're mid-programme with an SI?</dt>
+        <dd>The diagnostic is complementary, not competitive. Your SI handles the migration. We prove whether the transformation is lossless. Many customers run the diagnostic as an independent verification alongside their existing programme.</dd>
+      </div>
+      <div class="faq-item">
+        <dt>What does it cost?</dt>
+        <dd>The Intelligence Report starts at £5,000. See <a href="/pricing/">Pricing</a> for full details on report tiers and what's included.</dd>
+      </div>
+      <div class="faq-item">
+        <dt>What if all our records pass the proof?</dt>
+        <dd>That's the best possible outcome — and you'll have the mathematical proof to show your programme board. The Ownership Ledger documents every proven record with a cryptographic hash.</dd>
+      </div>
+      <div class="faq-item">
+        <dt>Can we see a sample report first?</dt>
+        <dd>Yes — <a href="/sample-report/">see the full sample Intelligence Report</a> with anonymised data from a real assessment.</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-card">
+      <h2>Ready to see your own data proven?</h2>
+      <p>The diagnostic takes minutes, not months. Upload your extract. See which records are lossless. See which ones need attention. Decide what to do next.</p>
+      <a href="mailto:hello@migrationproof.io?subject=Diagnostic%20request%20—%20Migration%20Proof&body=I'd%20like%20to%20run%20the%20read-only%20diagnostic%20on%20our%20SAP%20ECC%20data.%0A%0ACompany%20(optional):%0AApproximate%20number%20of%20invoices:%0ATarget%20system:%20S/4HANA%0APreferred%20timeline:%0A" class="cta-btn">Request the extractor</a>
+      <div>
+        <a href="/sample-report/" class="cta-secondary">See the sample report first →</a>
+      </div>
+    </div>
+  </div>
+
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/sample-report/">Sample Report</a><a href="/about/">About</a></div></div>
+  </div></footer>
+
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>
