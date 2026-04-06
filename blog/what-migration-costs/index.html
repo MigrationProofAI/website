@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Does Migration Really Cost? And What Should It? — Migration Proof</title>
+  <meta name="description" content="If the assessment is mathematical — not manual — what does that do to the cost equation?" />
+  <meta property="og:title" content="What Does Migration Really Cost? And What Should It?" />
+  <meta property="og:description" content="If the assessment is mathematical — not manual — what does that do to the cost equation?" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://migrationproof.io/blog/what-migration-costs/" />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/blog/what-migration-costs/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:0.02em;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    .muted{color:var(--muted)}
+
+    /* Article styles */
+    .article-header{padding:120px 24px 40px;max-width:760px;margin:0 auto}
+    .article-header .meta{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+    .article-header h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.02em}
+    .article-header .subtitle-text{font-size:1.15rem;color:var(--muted);line-height:1.6;font-style:italic}
+
+    .article-body{max-width:760px;margin:0 auto;padding:0 24px 80px;font-size:1.08rem;line-height:1.8}
+    .article-body h2{font-size:1.6rem;font-weight:700;color:var(--text);margin-top:48px;margin-bottom:16px;padding-top:24px;border-top:1px solid var(--line);letter-spacing:-0.01em}
+    .article-body p{margin-bottom:20px;color:var(--text)}
+    .article-body strong{color:var(--text);font-weight:600}
+    .article-body em{color:var(--accent)}
+    .article-body blockquote{border-left:3px solid var(--accent);padding:16px 24px;margin:28px 0;background:rgba(130,230,181,0.05);font-style:italic;border-radius:0 12px 12px 0}
+    .article-body code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;background:var(--panel);padding:2px 6px;border-radius:4px;border:1px solid var(--line)}
+    .article-body pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;overflow-x:auto;margin:24px 0;line-height:1.5}
+    .article-body pre code{background:none;padding:0;font-size:0.85rem;border:none}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.95rem}
+    .article-body th{text-align:left;padding:10px 16px;border-bottom:2px solid var(--accent);color:var(--text);font-weight:600}
+    .article-body td{padding:10px 16px;border-bottom:1px solid var(--line)}
+    .article-body hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+    .article-body ul,.article-body ol{margin:16px 0 20px 24px}.article-body li{margin-bottom:8px}
+
+    .note-from-us{margin-top:60px;padding:28px;background:var(--panel);border-radius:18px;border:1px solid var(--line)}
+    .note-from-us h2{font-size:1.3rem;margin-bottom:16px;color:var(--text)}
+    .note-from-us p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:1rem}
+    .note-from-us a.email{font-family:'JetBrains Mono','Fira Code',monospace;font-size:1.15rem;color:var(--accent);display:block;margin:16px 0}
+
+    .series-nav{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px}
+    .series-nav a{font-size:0.95rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;transition:color .2s}
+    .series-nav a:hover{color:var(--text)}
+    .series-nav .label{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px}
+    .series-nav .next{text-align:right}
+
+    /* Blog index styles */
+    .article-list{display:flex;flex-direction:column;gap:18px}
+    .article-card{display:block;padding:24px 28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;transition:all .2s;box-shadow:var(--shadow)}
+    .article-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .article-card .card-meta{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono','Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px}
+    .article-card h3{font-size:1.25rem;color:var(--text);margin-bottom:8px;font-weight:600}
+    .article-card p{font-size:0.95rem;color:var(--muted);line-height:1.5;margin:0}
+    .article-card .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.72rem;padding:4px 10px;border-radius:999px;background:var(--panel-2);color:var(--accent);border:1px solid var(--line)}
+
+    .start-box{margin-bottom:40px;padding:20px 24px;background:var(--panel);border-radius:12px;border-left:3px solid var(--accent)}
+    .start-box p{margin:0;font-size:0.95rem;color:var(--muted)}
+    .start-box strong{color:var(--text)}
+
+    @media(max-width:768px){
+      .article-header h1{font-size:1.8rem}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .series-nav{flex-direction:column}
+      .footer-panel{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark">MP</div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+  <div class="article-header">
+    <div class="meta">Article 6 · April 17, 2026 · Migration Proof</div>
+    <h1>What Does Migration Really Cost? And What Should It?</h1>
+    <p class="subtitle-text">If the assessment is mathematical — not manual — what does that do to the cost equation?</p>
+  </div>
+  <div class="article-body">
+    <p><em>The economics of data migration have not changed in twenty years. The work has. If the assessment is mathematical — not manual — what does that do to the cost equation?</em></p>
+<hr />
+<p>A typical enterprise migration assessment costs somewhere between a hundred thousand and half a million pounds. The number varies by system size, scope, and the system integrator's day rate. But the structure of the cost is always the same: people, multiplied by time.</p>
+<p>Consultants for discovery workshops. Analysts for mapping spreadsheets. Testers for load cycles. Programme managers for coordination. Status report writers for the steering committee. Each of these roles has a day rate. Each activity takes weeks. The total accumulates over three to six months, and by the time the assessment is complete, the programme has spent a significant portion of its budget before a single record has been migrated.</p>
+<p>This is not a criticism. It is an observation about structure. The cost is high because the work is manual. The work is manual because it has always been manual. And it has always been manual because nobody built the alternative.</p>
+<p>The question worth asking is: <strong>what should the cost be if the work is mathematical instead?</strong></p>
+<hr />
+<h2>Where the cost actually goes</h2>
+<p>In a traditional migration assessment, the budget distributes roughly like this:</p>
+<p><strong>Discovery (25-30% of cost).</strong> Workshops to understand the source system landscape. Interviews with data owners. Documentation of object types, field structures, and business rules. This work produces the input for mapping.</p>
+<p><strong>Mapping (20-25%).</strong> Building the field-by-field mapping specification. Source field A maps to target field B. Value X in the source becomes value Y in the target. This is typically maintained in spreadsheets, reviewed by business analysts, and iterated over multiple rounds.</p>
+<p><strong>Test loads (25-30%).</strong> Loading sample data into a sandbox environment. Debugging failures. Adjusting mappings. Reloading. This cycle typically runs two to four times before the team is satisfied that the sample loads cleanly.</p>
+<p><strong>Reporting and coordination (15-20%).</strong> Status reports, steering committee presentations, risk assessments, and the final assessment report that says "we are ready" or "we are not."</p>
+<p>Each of these activities is necessary under the traditional model. But each one contains a structural inefficiency: it is discovering, through human effort, something that is already knowable.</p>
+<hr />
+<h2>What is knowable in advance</h2>
+<p>The mapping rules for enterprise system migrations are not infinite. For any given source-to-target pair, the object types are finite. The field structures are documented. The API constraints are published. The dependency relationships are structural. The valid value sets are configured in the target system.</p>
+<p>A consultant who spends four weeks in workshops is discovering rules that the systems already contain. An analyst who spends three weeks building a mapping spreadsheet is encoding transformations that the API specifications already define. A tester who spends six weeks running load cycles is verifying — through trial and error — preconditions that are formally checkable.</p>
+<p>This is not a criticism of the people doing the work. They are skilled, diligent, and working within the only model available to them. The observation is about the model, not the people: <strong>the cost is proportional to human effort, and much of that effort is discovering what is already deterministic.</strong></p>
+<p>If you encode the mapping rules into a kernel — forward and inverse transforms for every object type — and encode the preconditions into a validation engine — formal checks against ISO standards, configuration tables, and referential integrity — then the discovery phase, the mapping phase, and the test-load phase are all replaced by a single computation.</p>
+<p>Not a faster version of the same work. A structurally different kind of work.</p>
+<hr />
+<h2>What changes when the work is mathematical</h2>
+<p>When the assessment is a computation rather than a consulting engagement, several things change:</p>
+<p><strong>Time compresses from months to minutes.</strong> Not because the engine is faster at doing the same thing, but because it eliminates activities that exist only because the traditional process requires humans to discover deterministic rules. There is no discovery workshop when the kernel already knows the mappings. There is no test-load cycle when the bijective proof verifies every record mathematically.</p>
+<p><strong>Coverage goes from two percent to one hundred percent.</strong> The traditional model samples because full coverage is too expensive with human effort. The mathematical model processes every record because the marginal cost of one more record is near zero. A proof engine that verifies one record can verify a million records in the same architectural pass — only the wall-clock time changes, and it changes linearly.</p>
+<p><strong>Quality shifts from probabilistic to provable.</strong> A test-load tells you that a sample passed. A bijective proof tells you that every record either passed or failed, with a specific diagnosis for every failure. The output is not "the migration looks ready." The output is "799 of 847 records are provably lossless, and here are the 48 that are not, with the exact reason and remediation for each one."</p>
+<p><strong>Cost follows the structural change.</strong> If the work that took three to six months now takes minutes, and the coverage that was two percent is now one hundred percent, and the quality that was "we think it is ready" is now "here is the mathematical proof" — then the cost basis is fundamentally different.</p>
+<hr />
+<h2>What the customer actually pays for</h2>
+<p>Under the traditional model, the customer pays for time — person-days multiplied by a day rate. The deliverable is an assessment report, but the cost driver is elapsed effort.</p>
+<p>Under the mathematical model, the customer pays for an outcome: a complete, per-record proof of transformation integrity, with diagnosed findings and specific remediations. The time is minutes, not months. The effort is computational, not human. The deliverable is not an opinion about readiness — it is a proof.</p>
+<p>This reframes the pricing question. The relevant comparison is not "how many person-days did this take?" but "what is the value of knowing — with mathematical certainty — which records will fail on cutover weekend?"</p>
+<p>For a programme with a two-hundred-million-pound budget and a fixed cutover date, the value of that knowledge is substantial. Finding forty-eight untransformable records before cutover — with specific root causes and remediation paths — prevents the four thousand nine hundred sixty failures that sampling would have missed. The cost of those failures on cutover weekend (emergency remediation, extended downtime, potential rollback) dwarfs the cost of the proof that would have caught them.</p>
+<hr />
+<h2>The fiduciary question</h2>
+<p>There is a sharper way to frame this. If a read-only diagnostic can identify the same issues — with higher coverage and mathematical certainty — in a fraction of the time and at a fraction of the cost of a traditional assessment, then the decision to not run the diagnostic is itself a risk decision.</p>
+<p>A CFO reviewing migration spend is not asking "how many workshops did we run?" They are asking "do we know it will work?" If the answer to that question can be obtained in twenty minutes with a read-only diagnostic, and the alternative is obtaining it over six months at vastly higher cost with lower coverage, then the cost-benefit analysis is straightforward.</p>
+<p>This is not about whether traditional assessments are bad. They produced value for decades. The question is whether, given a mathematical alternative, continuing to rely exclusively on the manual approach represents the best use of programme resources.</p>
+<p>The answer depends on the programme. But the question should be asked. And increasingly, it will be asked by the people who control the budget — because the cost differential is too large to ignore.</p>
+<hr />
+<h2>What we charge and why</h2>
+<p>Migration Proof offers three tiers:</p>
+<p><strong>Intelligence Report.</strong> The full bijective proof — one hundred percent record coverage, untransformable diagnosis with per-record root cause and remediation, cascade impact analysis, dependency chain map, and Ownership Ledger with cryptographic proof entries. Self-serve: upload your extract, receive the report. This is the entry point.</p>
+<p><strong>Proof and Clean.</strong> Everything in the Intelligence Report, plus data cleansing for all untransformable records, value mapping resolution, and re-proof cycles until one hundred percent of records are transformable. This is for programmes that want the findings fixed, not just identified.</p>
+<p><strong>Clean Sweep.</strong> Full migration execution — dependency-ordered creation of records in the target system via standard APIs, live system proof, delta synchronisation, and cutover support.</p>
+<p>Each tier is a superset of the previous. And the Intelligence Report is designed to make the case for the next tier using the customer's own data — not a sales pitch, but a specific diagnosis: "here are the forty-eight records that need fixing, here is exactly what is wrong with each one, and here is what it costs to fix them." The customer's own data makes the argument.</p>
+<hr />
+<p>migrationproof.io is launching shortly. First release covers SAP ECC-to-S/4HANA. The mathematics applies to any system-to-system transformation.</p>
+<hr />
+    <div class="note-from-us">
+      <h2>A note from us</h2>
+      <p>Migration Proof is an AI-native operation. Five specialised AI personas run the chain walk, precondition checks, transformation, proof, and reporting. Behind them, twenty-five years of enterprise system experience shaped every rule they apply.</p>
+      <p>We are mostly agents — and we are proud of that, because agents prove every record, not a two percent sample. When you write to us, a human replies.</p>
+      <a href="mailto:hello@migrationproof.io" class="email">hello@migrationproof.io</a>
+      <p>We read every message. We reply to every question.</p>
+    </div>
+    <div class="series-nav">
+      <a href="/blog/95-percent-mapped/"><span class="label">← Previous</span>95% Mapped</a>
+      <a href="/blog/untransformable-report/" class="next"><span class="label">Next →</span>Untransformable Report</a>
+    </div>
+  </div>
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel" style="padding:22px"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a></div></div>
+  </div></footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>

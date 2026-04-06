@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Happens to Data Quality After Go-Live? — Migration Proof</title>
+  <meta name="description" content="What if the engine that proved your migration could guard your data permanently?" />
+  <meta property="og:title" content="What Happens to Data Quality After Go-Live?" />
+  <meta property="og:description" content="What if the engine that proved your migration could guard your data permanently?" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://migrationproof.io/blog/after-go-live/" />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/blog/after-go-live/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:0.02em;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    .muted{color:var(--muted)}
+
+    /* Article styles */
+    .article-header{padding:120px 24px 40px;max-width:760px;margin:0 auto}
+    .article-header .meta{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+    .article-header h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.02em}
+    .article-header .subtitle-text{font-size:1.15rem;color:var(--muted);line-height:1.6;font-style:italic}
+
+    .article-body{max-width:760px;margin:0 auto;padding:0 24px 80px;font-size:1.08rem;line-height:1.8}
+    .article-body h2{font-size:1.6rem;font-weight:700;color:var(--text);margin-top:48px;margin-bottom:16px;padding-top:24px;border-top:1px solid var(--line);letter-spacing:-0.01em}
+    .article-body p{margin-bottom:20px;color:var(--text)}
+    .article-body strong{color:var(--text);font-weight:600}
+    .article-body em{color:var(--accent)}
+    .article-body blockquote{border-left:3px solid var(--accent);padding:16px 24px;margin:28px 0;background:rgba(130,230,181,0.05);font-style:italic;border-radius:0 12px 12px 0}
+    .article-body code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;background:var(--panel);padding:2px 6px;border-radius:4px;border:1px solid var(--line)}
+    .article-body pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;overflow-x:auto;margin:24px 0;line-height:1.5}
+    .article-body pre code{background:none;padding:0;font-size:0.85rem;border:none}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.95rem}
+    .article-body th{text-align:left;padding:10px 16px;border-bottom:2px solid var(--accent);color:var(--text);font-weight:600}
+    .article-body td{padding:10px 16px;border-bottom:1px solid var(--line)}
+    .article-body hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+    .article-body ul,.article-body ol{margin:16px 0 20px 24px}.article-body li{margin-bottom:8px}
+
+    .note-from-us{margin-top:60px;padding:28px;background:var(--panel);border-radius:18px;border:1px solid var(--line)}
+    .note-from-us h2{font-size:1.3rem;margin-bottom:16px;color:var(--text)}
+    .note-from-us p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:1rem}
+    .note-from-us a.email{font-family:'JetBrains Mono','Fira Code',monospace;font-size:1.15rem;color:var(--accent);display:block;margin:16px 0}
+
+    .series-nav{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px}
+    .series-nav a{font-size:0.95rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;transition:color .2s}
+    .series-nav a:hover{color:var(--text)}
+    .series-nav .label{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px}
+    .series-nav .next{text-align:right}
+
+    /* Blog index styles */
+    .article-list{display:flex;flex-direction:column;gap:18px}
+    .article-card{display:block;padding:24px 28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;transition:all .2s;box-shadow:var(--shadow)}
+    .article-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .article-card .card-meta{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono','Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px}
+    .article-card h3{font-size:1.25rem;color:var(--text);margin-bottom:8px;font-weight:600}
+    .article-card p{font-size:0.95rem;color:var(--muted);line-height:1.5;margin:0}
+    .article-card .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.72rem;padding:4px 10px;border-radius:999px;background:var(--panel-2);color:var(--accent);border:1px solid var(--line)}
+
+    .start-box{margin-bottom:40px;padding:20px 24px;background:var(--panel);border-radius:12px;border-left:3px solid var(--accent)}
+    .start-box p{margin:0;font-size:0.95rem;color:var(--muted)}
+    .start-box strong{color:var(--text)}
+
+    @media(max-width:768px){
+      .article-header h1{font-size:1.8rem}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .series-nav{flex-direction:column}
+      .footer-panel{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark">MP</div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+  <div class="article-header">
+    <div class="meta">Article 8 · April 24, 2026 · Migration Proof</div>
+    <h1>What Happens to Data Quality After Go-Live?</h1>
+    <p class="subtitle-text">What if the engine that proved your migration could guard your data permanently?</p>
+  </div>
+  <div class="article-body">
+    <p><em>Most migration programmes disband the data team within weeks of cutover. The system they built starts decaying the moment they leave. What if the engine that proved your migration could guard your data permanently?</em></p>
+<hr />
+<p>There is a pattern in enterprise migrations that nobody talks about. The migration programme spends months — sometimes years — cleaning data, building mappings, running test loads, and verifying readiness. On cutover weekend, the data moves. The programme declares success. The data team disbands. The consultants move to the next engagement.</p>
+<p>And then the data starts to decay.</p>
+<p>Not immediately. Not dramatically. Slowly, record by record, as users create new entries in the target system without the rigour that the migration team applied. A supplier is created with a country code that the migration would have caught. A material is set up with a unit of measure that the precondition engine would have flagged. A purchase order is posted against a supplier that lacks a required organisational assignment.</p>
+<p>Each individual error is small. Together, over months, they erode the data quality that the migration worked so hard to achieve. Within a year, the target system's data quality is measurably worse than it was on go-live day — not because the migration failed, but because the quality controls that existed during migration were temporary.</p>
+<p>This is the post-migration decay problem. And it is entirely preventable.</p>
+<hr />
+<h2>Why decay happens</h2>
+<p>The migration programme applies quality controls that do not exist in normal operations:</p>
+<p><strong>Precondition checks.</strong> During migration, every record passes through formal validation — ISO code checks, configuration table lookups, referential integrity verification. After migration, new records are subject only to the target system's standard validation, which typically checks format and mandatory fields but not semantic correctness or dependency completeness.</p>
+<p><strong>Dependency verification.</strong> During migration, the chain-walk engine verifies that every object has its upstream dependencies present and valid. After migration, users create objects individually — a supplier here, a PO there — without any automated check that the dependency chain is complete. A supplier can be created without a purchasing organisation assignment, and the error will only surface when someone tries to create a PO against it.</p>
+<p><strong>Transformation integrity.</strong> During migration, the bijective proof verifies that every record preserves meaning. After migration, no equivalent check exists. A user can change a supplier classification from "trade vendor" to "one-time vendor" without any system checking whether downstream processes depend on that distinction. The change is valid at the field level. It may be destructive at the process level.</p>
+<p><strong>Human expertise.</strong> During migration, the data team includes specialists who understand the implications of every field value. After migration, the users creating new records are operational staff — skilled in their business domain but not necessarily aware of the data model implications of their entries.</p>
+<p>The result is a gradual, invisible erosion. No single error is catastrophic. But the cumulative effect is measurable: more exception reports, more manual corrections, more "data quality issues" raised in monthly reviews, and a growing sense that "the system is not working as expected."</p>
+<p>It is working exactly as expected. It is working with the data it was given — and the data is no longer being controlled with the same rigour as during migration.</p>
+<hr />
+<h2>The ontology your migration built</h2>
+<p>Here is what most programmes do not realise: the migration process created something valuable that persists beyond the migration itself.</p>
+<p>The mapping kernel — the set of forward and inverse transforms for every object type — is a formal model of how your data should behave. It encodes every field relationship, every value mapping, every dependency rule, every precondition constraint. It is, in effect, a <strong>formal ontology of your enterprise data</strong> — not an abstract data model drawn on a whiteboard, but a working, executable model that has been verified against every record in your system.</p>
+<p>Throwing this ontology away after migration is like throwing away an architect's blueprints after building the house. The blueprints do not stop being useful just because the construction is finished. They tell you how the building works, what load each beam carries, and what happens if you modify one part without understanding its relationship to the others.</p>
+<p>The migration kernel is the same. It tells you how your data works, what each field means, and what happens if a value changes in ways that violate the formal model.</p>
+<hr />
+<h2>What continuous proof looks like</h2>
+<p>If the kernel persists after migration — and there is no reason it should not — then the same proof that verified the migration can verify ongoing operations.</p>
+<p><strong>New record validation.</strong> Every new supplier, material, purchase order, or invoice created in the target system can be checked against the same precondition rules that were applied during migration. Is the country code valid ISO? Is the payment term in the configuration table? Does the supplier have the required organisational assignments? The precondition engine does not need to be retrained or reconfigured — the rules are already there, accumulated from the migration and from every engagement the engine has processed.</p>
+<p><strong>Change impact analysis.</strong> When a user modifies a master data record — changing a supplier's payment terms, for example — the dependency-chain engine can compute the downstream impact in real time. "Changing this supplier's payment terms from sixty-day to immediate will affect four hundred invoices in the payment queue. Estimated cash flow impact: significant. Do you want to proceed?" This is not a warning based on heuristics. It is a computed impact based on the actual dependency graph.</p>
+<p><strong>Periodic proof cycles.</strong> At the end of each month, or each quarter, or each fiscal year close, the bijective proof can be re-run on all records that changed since the last cycle. If any record's roundtrip fails — if f⁻¹(f(x)) ≠ x for any field — then something changed in a way that violates the formal model. The proof does not just say "something is wrong." It says which record, which field, what the current value is, what the model expects, and what the discrepancy means.</p>
+<p><strong>Drift detection.</strong> Over time, operational changes may introduce patterns that diverge from the formal model. A new payment term code is created in the target system but not added to the kernel's value map. A new organisational structure is introduced that the dependency model does not account for. The proof engine detects these divergences — not as errors, but as model updates needed. The kernel evolves with the business, rather than becoming stale.</p>
+<hr />
+<h2>From migration tool to operational intelligence</h2>
+<p>This is the shift that most people do not see coming: the engine that proves your migration is the same engine that can operate your data quality, indefinitely.</p>
+<p>The migration is the moment the model is built. The model is built by proving every record, discovering every rule, mapping every dependency. That model does not expire on go-live day. It is the most complete, formally verified representation of your data's transformation rules that has ever existed for your system.</p>
+<p>Using it only for migration is like using a telescope once and then putting it in storage. The telescope does not stop working after the first observation. And the data model does not stop being useful after the first proof cycle.</p>
+<p>What changes after migration is the frequency and the scope:</p>
+<ul>
+<li>During migration: prove everything, once, comprehensively</li>
+<li>After migration: prove changes, continuously, incrementally</li>
+<li>During expansion: extend the kernel to new object types and new process domains</li>
+</ul>
+<p>The architecture is the same. The precondition engine is the same. The proof is the same. The knowledge graph that accumulates cross-customer learning is the same. Only the input changes — from "all historical records being migrated" to "all new and changed records in the live system."</p>
+<hr />
+<h2>Why this matters for the business case</h2>
+<p>A migration engagement is a one-time cost. Valuable, but finite. The customer pays once, receives the Intelligence Report, and the engagement ends.</p>
+<p>A continuous data quality assurance relationship is recurring. The customer pays for ongoing proof — and receives ongoing protection against the post-migration decay that every enterprise experiences.</p>
+<p>This changes the economics for both parties:</p>
+<p>For the customer: instead of paying for periodic data quality audits (which are typically manual, sample-based, and retrospective), they receive continuous, automated, proof-based assurance. Every new record is validated. Every change is impact-analysed. Every period-end is proven. The cost of data quality shifts from "expensive manual remediation after problems surface" to "inexpensive automated prevention before problems occur."</p>
+<p>For the provider: instead of a one-time project fee, there is a recurring relationship built on demonstrated value. The engine runs continuously. The knowledge graph improves continuously. The customer's data quality is visibly maintained. The value is measurable — and the customer knows it, because the proof results are visible.</p>
+<hr />
+<h2>The practical path</h2>
+<p>This is not something we are asking anyone to buy today. Our first release is the migration engine — the Intelligence Report, the bijective proof, the untransformable diagnosis. That is where the value starts, and where the trust is built.</p>
+<p>But the architecture is designed from the beginning with persistence in mind. The kernel does not assume it will be used once. The precondition rules are stored, not discarded. The knowledge graph accumulates, not resets. The proof engine can run against a snapshot (migration) or against a delta (ongoing operations).</p>
+<p>When a customer completes their migration and asks "what happens to this engine now?" the answer is not "it gets archived." The answer is: <strong>it keeps running. The migration was the beginning, not the end.</strong></p>
+<hr />
+<p>migrationproof.io — launching shortly. First release: SAP ECC-to-S/4HANA migration proof. The architecture extends to continuous operations. The mathematics never stops being useful.</p>
+<hr />
+    <div class="note-from-us">
+      <h2>A note from us</h2>
+      <p>Migration Proof is an AI-native operation. Five specialised AI personas run the chain walk, precondition checks, transformation, proof, and reporting. Behind them, twenty-five years of enterprise system experience shaped every rule they apply.</p>
+      <p>We are mostly agents — and we are proud of that, because agents prove every record, not a two percent sample. When you write to us, a human replies.</p>
+      <a href="mailto:hello@migrationproof.io" class="email">hello@migrationproof.io</a>
+      <p>We read every message. We reply to every question.</p>
+    </div>
+    <div class="series-nav">
+      <a href="/blog/untransformable-report/"><span class="label">← Previous</span>Untransformable Report</a>
+      <a href="/blog/catastrophe-theory/" class="next"><span class="label">Next →</span>Catastrophe Theory</a>
+    </div>
+  </div>
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel" style="padding:22px"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a></div></div>
+  </div></footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>

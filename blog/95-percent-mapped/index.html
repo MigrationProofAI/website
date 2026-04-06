@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why 95% Mapped Does Not Mean Your Migration Is Safe — Migration Proof</title>
+  <meta name="description" content="Mapping coverage is a progress metric, not a safety metric." />
+  <meta property="og:title" content="Why 95% Mapped Does Not Mean Your Migration Is Safe" />
+  <meta property="og:description" content="Mapping coverage is a progress metric, not a safety metric." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://migrationproof.io/blog/95-percent-mapped/" />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/blog/95-percent-mapped/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:0.02em;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    .muted{color:var(--muted)}
+
+    /* Article styles */
+    .article-header{padding:120px 24px 40px;max-width:760px;margin:0 auto}
+    .article-header .meta{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+    .article-header h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.02em}
+    .article-header .subtitle-text{font-size:1.15rem;color:var(--muted);line-height:1.6;font-style:italic}
+
+    .article-body{max-width:760px;margin:0 auto;padding:0 24px 80px;font-size:1.08rem;line-height:1.8}
+    .article-body h2{font-size:1.6rem;font-weight:700;color:var(--text);margin-top:48px;margin-bottom:16px;padding-top:24px;border-top:1px solid var(--line);letter-spacing:-0.01em}
+    .article-body p{margin-bottom:20px;color:var(--text)}
+    .article-body strong{color:var(--text);font-weight:600}
+    .article-body em{color:var(--accent)}
+    .article-body blockquote{border-left:3px solid var(--accent);padding:16px 24px;margin:28px 0;background:rgba(130,230,181,0.05);font-style:italic;border-radius:0 12px 12px 0}
+    .article-body code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;background:var(--panel);padding:2px 6px;border-radius:4px;border:1px solid var(--line)}
+    .article-body pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;overflow-x:auto;margin:24px 0;line-height:1.5}
+    .article-body pre code{background:none;padding:0;font-size:0.85rem;border:none}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.95rem}
+    .article-body th{text-align:left;padding:10px 16px;border-bottom:2px solid var(--accent);color:var(--text);font-weight:600}
+    .article-body td{padding:10px 16px;border-bottom:1px solid var(--line)}
+    .article-body hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+    .article-body ul,.article-body ol{margin:16px 0 20px 24px}.article-body li{margin-bottom:8px}
+
+    .note-from-us{margin-top:60px;padding:28px;background:var(--panel);border-radius:18px;border:1px solid var(--line)}
+    .note-from-us h2{font-size:1.3rem;margin-bottom:16px;color:var(--text)}
+    .note-from-us p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:1rem}
+    .note-from-us a.email{font-family:'JetBrains Mono','Fira Code',monospace;font-size:1.15rem;color:var(--accent);display:block;margin:16px 0}
+
+    .series-nav{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px}
+    .series-nav a{font-size:0.95rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;transition:color .2s}
+    .series-nav a:hover{color:var(--text)}
+    .series-nav .label{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px}
+    .series-nav .next{text-align:right}
+
+    /* Blog index styles */
+    .article-list{display:flex;flex-direction:column;gap:18px}
+    .article-card{display:block;padding:24px 28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;transition:all .2s;box-shadow:var(--shadow)}
+    .article-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .article-card .card-meta{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono','Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px}
+    .article-card h3{font-size:1.25rem;color:var(--text);margin-bottom:8px;font-weight:600}
+    .article-card p{font-size:0.95rem;color:var(--muted);line-height:1.5;margin:0}
+    .article-card .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.72rem;padding:4px 10px;border-radius:999px;background:var(--panel-2);color:var(--accent);border:1px solid var(--line)}
+
+    .start-box{margin-bottom:40px;padding:20px 24px;background:var(--panel);border-radius:12px;border-left:3px solid var(--accent)}
+    .start-box p{margin:0;font-size:0.95rem;color:var(--muted)}
+    .start-box strong{color:var(--text)}
+
+    @media(max-width:768px){
+      .article-header h1{font-size:1.8rem}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .series-nav{flex-direction:column}
+      .footer-panel{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark">MP</div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+  <div class="article-header">
+    <div class="meta">Article 5 · April 14, 2026 · Migration Proof</div>
+    <h1>Why 95% Mapped Does Not Mean Your Migration Is Safe</h1>
+    <p class="subtitle-text">Mapping coverage is a progress metric, not a safety metric.</p>
+  </div>
+  <div class="article-body">
+    <p><em>Mapping coverage is a progress metric, not a safety metric. The five percent you have not examined contains eighty percent of your cutover-weekend failures. This applies to every system migration — the examples here are from SAP.</em></p>
+<hr />
+<p>Somewhere in your programme, there is a dashboard showing ninety-five percent mapping coverage. It is green. The steering committee looked at it last Thursday and felt reassured. The programme director referenced it in an email to the CFO. Ninety-five percent. Nearly there.</p>
+<p>Here is what that number does not tell you: <strong>whether the transformation is lossless</strong>. Whether meaning survives the move. Whether a record that enters the mapping kernel emerges on the other side with every field, every relationship, and every business distinction intact — or whether something was quietly dropped, collapsed, or defaulted to a value that will break a process six months after go-live.</p>
+<p>Last year, a European manufacturer reported ninety-seven percent mapping coverage three weeks before cutover. Their migration dashboard was solid green. On cutover weekend, twenty-three thousand purchase orders failed validation in the target system. The root cause: two supplier classifications — trade vendors and one-time vendors — had been mapped to the same grouping in the target. The mapping was complete. It was not lossless. The downstream purchasing process depended on that distinction. The mapping team had checked the box. The business logic had lost a signal. And the programme lost four weeks.</p>
+<blockquote>
+<p>A green dashboard is often just a spreadsheet's way of saying nobody asked a harder question.</p>
+</blockquote>
+<hr />
+<h2>Coverage is not safety</h2>
+<p>Mapping coverage measures how many fields have been assigned a target. It answers the question: <em>have we decided where each field goes?</em> This is a necessary question. It is not a sufficient one.</p>
+<p>Migration safety measures whether the transformation preserves meaning. It answers a different question: <em>does the data survive the move?</em> A field can be mapped to a target and still lose information in transit. A record can pass through a mapping kernel and arrive in the target system structurally complete but semantically wrong.</p>
+<p>The gap between coverage and safety is where migrations fail. And the gap is invisible to any metric that counts mappings instead of testing transformations.</p>
+<p>We have a specific term for what most programmes are missing: <strong>transformation integrity</strong>. A transformation has integrity when three conditions hold:</p>
+<p><strong>Lossless</strong>: no information is discarded. If two distinct source values exist, two distinct target values must exist. If a classification carried business meaning in the source system, it must carry the same meaning in the target.</p>
+<p><strong>Reversible</strong>: the transformation can be undone. If you take the target record and reverse the mapping, you must recover the original source record exactly. This is the mathematical test — f⁻¹(f(x)) ≡ x — that the transformation is bijective, not just directional.</p>
+<p><strong>Chain-complete</strong>: the transformation respects dependencies. A purchase order cannot exist without its supplier. A goods receipt cannot exist without its purchase order. We call this <strong>dependency-chain integrity</strong> — and a mapping that ignores it will produce records that load successfully in isolation and fail catastrophically in integration.</p>
+<blockquote>
+<p>Coverage asks: is every field assigned? Transformation integrity asks: does every record survive?
+These are not the same question. And only one of them predicts cutover success.</p>
+</blockquote>
+<hr />
+<h2>Four ways "mapped" data fails silently</h2>
+<p>When a programme reports ninety-five percent mapping coverage, the remaining five percent is typically labelled "in progress" or "deferred." But the real risk is not in the unmapped five percent. It is in the mapped ninety-five percent — the records that have been assigned a target but have not been tested for transformation integrity.</p>
+<p><strong>Lossy transformations.</strong> Two distinct values in the source collapse into one value in the target. The mapping is technically complete — both values have a target — but the distinction is lost. Example: two supplier classifications — trade vendor and one-time vendor — both mapped to the same grouping. Procurement loses the ability to distinguish them. Every purchasing report that relied on that distinction is silently wrong from day one.</p>
+<p><strong>Broken dependency chains.</strong> A supplier is migrated, but its purchasing organisation assignment is missing. The supplier exists in the target. The purchase order references it. But when the PO is created, it fails — the supplier has no valid purchasing organisation for that company code. The supplier is present. The PO cannot be posted. The goods receipt cannot follow. The invoice has nothing to reference. One missing link and every object downstream is blocked.</p>
+<p><strong>Default-masked gaps.</strong> A field in the source is null or non-standard. The transformation assigns a default — immediate payment terms. The record loads. Six months later, four hundred suppliers are on immediate payment terms who should be on sixty-day terms. The company has been paying invoices on receipt instead of holding cash for two months. Millions in working capital left the business sixty days early, every month, for a year. Nobody connects it to a default assigned during migration. The transformation did not fail — it lied. And the lie cost real money every day it went undetected.</p>
+<p><strong>Loaded-but-not-usable records.</strong> A material master loads with all mandatory fields. But the combination of material type, planning profile, storage location, classification, and characteristics creates a configuration that does not exist in the target plant. The material cannot be used in a production order. Worse — when downstream processes reference it, the invalid configuration propagates. A bill of materials inherits it. A production order references the BOM. A goods movement attempts to post against a storage location the plant does not recognise. The corruption spreads. The material is technically migrated, operationally useless, and actively poisoning the data around it.</p>
+<p>Every one of these failures passes the mapping coverage check. Every one produces a green row on the dashboard.</p>
+<hr />
+<h2>The question your dashboard cannot answer</h2>
+<p>The fundamental problem is not that programmes fail to map their data. Most programmes map diligently. The problem is that mapping is treated as the <em>end</em> of the data workstream rather than the <em>beginning</em>.</p>
+<p>A mapping decision is a hypothesis. The question is whether anyone tests it. Until you verify that every mapped value can be reversed without ambiguity — and that every record carrying that value produces the expected target value and not a default — the hypothesis is untested.</p>
+<p>The question your dashboard cannot answer is: <strong>if I take every mapped record, transform it, and reverse the transformation, do I get back exactly what I started with?</strong></p>
+<p>If yes, the transformation is lossless. If no, something was lost. And whatever was lost is exactly what will break on cutover weekend.</p>
+<blockquote>
+<p>This is the reverse proof. It is not a new concept in mathematics. It is new in data migration. And it is the only test that converts a mapping hypothesis into a transformation proof.</p>
+</blockquote>
+<hr />
+<h2>What migration safety actually looks like</h2>
+<p>A migration is safe when three things are true simultaneously:</p>
+<p><strong>Every transformation is lossless.</strong> For every record, the forward transform followed by the reverse transform recovers the original. No information discarded. No distinctions collapsed. f⁻¹(f(x)) ≡ x. If this holds, the transformation is bijective — provably correct, not probably correct.</p>
+<p><strong>Every dependency chain is complete.</strong> No record is loaded into the target without all of its upstream dependencies already present. Supplier before PO. PO before goods receipt. Goods receipt before invoice. This is structural integrity. Break the chain and the target system rejects the record.</p>
+<p><strong>Every untransformable is diagnosed before cutover.</strong> Records that cannot survive the lossless transformation are identified, quarantined, and reported with a specific root cause and remediation path. Not after UAT. Not during cutover. Before any transformation is attempted. We call these records <strong>untransformables</strong> — and they are the most valuable findings your migration programme will ever produce, because they tell you exactly what needs to be fixed and exactly why.</p>
+<p>This is transformation integrity. It is measurable, verifiable, and — critically — it does not require trust in the person who ran it. The proof is self-verifying. Anyone can check it. A mapping is an opinion. A lossless transformation proof is a mathematical fact.</p>
+<hr />
+<h2>What to do about it</h2>
+<p>If your programme is reporting high mapping coverage, the next question is simple: <strong>is the transformation actually lossless?</strong></p>
+<p>You do not need to take our word for it. You do not need to book a demo or attend a workshop. You need to see your own data.</p>
+<p>Migration Proof runs a read-only diagnostic on your data extract. You download a short extractor report, run it against your source system with one hundred invoices selected, and upload the output. The engine walks the dependency chain, expands every related object, checks every precondition, and runs the reverse proof on every record. In under twenty minutes, you see:</p>
+<p>— Which records are provably lossless
+— Which dependency chains are intact and which are broken
+— Which records are untransformable, with the exact field and the exact reason
+— What percentage of your data is genuinely safe, not just mapped</p>
+<p>No writes to your source system. No production access required. No consultants. Just mathematics applied to your data.</p>
+<blockquote>
+<p>The mapping dashboard tells you how far your programme has come.
+The transformation proof tells you whether your programme will succeed.
+One of those takes months and costs six figures. The other takes twenty minutes and costs a fraction.
+migrationproof.io</p>
+</blockquote>
+<hr />
+<p>Launching shortly. First release covers SAP ECC-to-S/4HANA. The mathematics applies to any system-to-system transformation.</p>
+<hr />
+    <div class="note-from-us">
+      <h2>A note from us</h2>
+      <p>Migration Proof is an AI-native operation. Five specialised AI personas run the chain walk, precondition checks, transformation, proof, and reporting. Behind them, twenty-five years of enterprise system experience shaped every rule they apply.</p>
+      <p>We are mostly agents — and we are proud of that, because agents prove every record, not a two percent sample. When you write to us, a human replies.</p>
+      <a href="mailto:hello@migrationproof.io" class="email">hello@migrationproof.io</a>
+      <p>We read every message. We reply to every question.</p>
+    </div>
+    <div class="series-nav">
+      <a href="/blog/five-ai-personas/"><span class="label">← Previous</span>Five AI Personas</a>
+      <a href="/blog/what-migration-costs/" class="next"><span class="label">Next →</span>What Migration Costs</a>
+    </div>
+  </div>
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel" style="padding:22px"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a></div></div>
+  </div></footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>

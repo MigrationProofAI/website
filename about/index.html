@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Migration Proof</title>
+  <meta name="description" content="Migration Proof is an AI-native operation that proves data transformations are lossless using bijective proof." />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/about/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:0.02em;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    .muted{color:var(--muted)}
+
+    /* Article styles */
+    .article-header{padding:120px 24px 40px;max-width:760px;margin:0 auto}
+    .article-header .meta{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+    .article-header h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.02em}
+    .article-header .subtitle-text{font-size:1.15rem;color:var(--muted);line-height:1.6;font-style:italic}
+
+    .article-body{max-width:760px;margin:0 auto;padding:0 24px 80px;font-size:1.08rem;line-height:1.8}
+    .article-body h2{font-size:1.6rem;font-weight:700;color:var(--text);margin-top:48px;margin-bottom:16px;padding-top:24px;border-top:1px solid var(--line);letter-spacing:-0.01em}
+    .article-body p{margin-bottom:20px;color:var(--text)}
+    .article-body strong{color:var(--text);font-weight:600}
+    .article-body em{color:var(--accent)}
+    .article-body blockquote{border-left:3px solid var(--accent);padding:16px 24px;margin:28px 0;background:rgba(130,230,181,0.05);font-style:italic;border-radius:0 12px 12px 0}
+    .article-body code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;background:var(--panel);padding:2px 6px;border-radius:4px;border:1px solid var(--line)}
+    .article-body pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;overflow-x:auto;margin:24px 0;line-height:1.5}
+    .article-body pre code{background:none;padding:0;font-size:0.85rem;border:none}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.95rem}
+    .article-body th{text-align:left;padding:10px 16px;border-bottom:2px solid var(--accent);color:var(--text);font-weight:600}
+    .article-body td{padding:10px 16px;border-bottom:1px solid var(--line)}
+    .article-body hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+    .article-body ul,.article-body ol{margin:16px 0 20px 24px}.article-body li{margin-bottom:8px}
+
+    .note-from-us{margin-top:60px;padding:28px;background:var(--panel);border-radius:18px;border:1px solid var(--line)}
+    .note-from-us h2{font-size:1.3rem;margin-bottom:16px;color:var(--text)}
+    .note-from-us p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:1rem}
+    .note-from-us a.email{font-family:'JetBrains Mono','Fira Code',monospace;font-size:1.15rem;color:var(--accent);display:block;margin:16px 0}
+
+    .series-nav{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px}
+    .series-nav a{font-size:0.95rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;transition:color .2s}
+    .series-nav a:hover{color:var(--text)}
+    .series-nav .label{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px}
+    .series-nav .next{text-align:right}
+
+    /* Blog index styles */
+    .article-list{display:flex;flex-direction:column;gap:18px}
+    .article-card{display:block;padding:24px 28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;transition:all .2s;box-shadow:var(--shadow)}
+    .article-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .article-card .card-meta{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono','Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px}
+    .article-card h3{font-size:1.25rem;color:var(--text);margin-bottom:8px;font-weight:600}
+    .article-card p{font-size:0.95rem;color:var(--muted);line-height:1.5;margin:0}
+    .article-card .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.72rem;padding:4px 10px;border-radius:999px;background:var(--panel-2);color:var(--accent);border:1px solid var(--line)}
+
+    .start-box{margin-bottom:40px;padding:20px 24px;background:var(--panel);border-radius:12px;border-left:3px solid var(--accent)}
+    .start-box p{margin:0;font-size:0.95rem;color:var(--muted)}
+    .start-box strong{color:var(--text)}
+
+    @media(max-width:768px){
+      .article-header h1{font-size:1.8rem}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .series-nav{flex-direction:column}
+      .footer-panel{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark">MP</div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+  <div class="article-header">
+    <h1>About Migration Proof</h1>
+    <p class="subtitle-text">Transformation integrity for data migrations. Maths, not art.</p>
+  </div>
+  <div class="article-body">
+    <p>Migration Proof exists because of a simple observation: the mathematics to prove a data migration is correct has existed for decades. Nobody applied it.</p>
+    <p>A bijective proof — the test that a function and its inverse are consistent — is the standard for verifying lossless transformations in cryptography, data compression, and signal processing. It has never been systematically applied to enterprise data migration. Until now.</p>
+    <h2>What we do</h2>
+    <p>We run a bijective proof on every record of your data migration. Not a sample. Not a statistical estimate. Every supplier, every material, every purchase order, every invoice. For each record, we apply the forward transformation, apply the inverse, and compare. If the roundtrip recovers the original exactly, the transformation is provably lossless. If it does not, we tell you exactly which field failed, exactly why, and exactly how to fix it.</p>
+    <p>The result is not an opinion about readiness. It is a mathematical proof. And a mathematical proof does not require trust in the person who produced it. The inverse function is there. Anyone can verify it.</p>
+    <h2>How we are built</h2>
+    <p>Migration Proof is an AI-native operation. Our engine is run by five specialised AI personas:</p>
+    <p><strong>Beacon</strong> discovers the full dependency chain — expanding a starting set of invoices into every related supplier, material, purchase order, and goods receipt. What takes workshops four to six weeks takes Beacon under a minute.</p>
+    <p><strong>Razor</strong> is the quality gate. Before any transformation is attempted, Razor checks every field of every record against formal precondition rules. Records that fail are quarantined at the gate with a specific diagnosis and remediation.</p>
+    <p><strong>Atlas</strong> applies the mapping kernel — forward and inverse transform pairs for every object type. These are built from deep knowledge of both source and target system architectures.</p>
+    <p><strong>Prism</strong> runs the bijective proof. For every record: forward transform, inverse transform, field-by-field comparison. If f⁻¹(f(x)) ≡ x, the record is certified lossless.</p>
+    <p><strong>Maestro</strong> orchestrates the pipeline and assembles the Intelligence Report — proof summary, untransformable diagnosis, cascade impact analysis, dependency chain map, and Ownership Ledger.</p>
+    <h2>What we believe</h2>
+    <p>We lead with our strength. We do not target competitors. We do not exploit another vendor's weakness. We present the standard we believe in and let the reader draw every conclusion.</p>
+    <p>The mathematics is the brand. SAP is the first instantiation. The bijective proof works wherever data transforms — Oracle, Dynamics, legacy systems, or any combination. We will follow the demand.</p>
+    <p>We are mostly agents — and we are proud of that, because agents prove every record, not a two percent sample. But we are not entirely agents. Twenty-five years of enterprise system experience shaped the mapping kernel. Human judgement designed the precondition rules. When you write to us, a human reads your message and a human replies.</p>
+    <h2>What is coming</h2>
+    <p>Our first release covers the core procurement chain — suppliers, materials, purchase orders, goods receipts, and invoices. From there, we extend to finance, controlling, sales, distribution, and beyond. And we are not stopping at SAP. The mathematics is system-agnostic. We will follow the demand.</p>
+    <p>Read the <a href="/blog/">article series</a> to understand the approach. When the platform is ready, you will be able to run a read-only diagnostic on your own data — no calls, no demos, no forms. Upload your extract. See the proof. Decide for yourself.</p>
+    <h2>Get in touch</h2>
+    <p><a href="mailto:hello@migrationproof.io" style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;color:var(--accent)">hello@migrationproof.io</a></p>
+    <p>We read every message. We reply to every question. And we would genuinely like to hear from you.</p>
+  </div>
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel" style="padding:22px"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a></div></div>
+  </div></footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>

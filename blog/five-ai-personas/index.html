@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Five AI Personas That Replace Six Months of Migration Consulting — Migration Proof</title>
+  <meta name="description" content="What if the mapping kernel already knew the rules?" />
+  <meta property="og:title" content="Five AI Personas That Replace Six Months of Migration Consulting" />
+  <meta property="og:description" content="What if the mapping kernel already knew the rules?" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://migrationproof.io/blog/five-ai-personas/" />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/blog/five-ai-personas/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:0.02em;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    .muted{color:var(--muted)}
+
+    /* Article styles */
+    .article-header{padding:120px 24px 40px;max-width:760px;margin:0 auto}
+    .article-header .meta{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+    .article-header h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.02em}
+    .article-header .subtitle-text{font-size:1.15rem;color:var(--muted);line-height:1.6;font-style:italic}
+
+    .article-body{max-width:760px;margin:0 auto;padding:0 24px 80px;font-size:1.08rem;line-height:1.8}
+    .article-body h2{font-size:1.6rem;font-weight:700;color:var(--text);margin-top:48px;margin-bottom:16px;padding-top:24px;border-top:1px solid var(--line);letter-spacing:-0.01em}
+    .article-body p{margin-bottom:20px;color:var(--text)}
+    .article-body strong{color:var(--text);font-weight:600}
+    .article-body em{color:var(--accent)}
+    .article-body blockquote{border-left:3px solid var(--accent);padding:16px 24px;margin:28px 0;background:rgba(130,230,181,0.05);font-style:italic;border-radius:0 12px 12px 0}
+    .article-body code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;background:var(--panel);padding:2px 6px;border-radius:4px;border:1px solid var(--line)}
+    .article-body pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;overflow-x:auto;margin:24px 0;line-height:1.5}
+    .article-body pre code{background:none;padding:0;font-size:0.85rem;border:none}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.95rem}
+    .article-body th{text-align:left;padding:10px 16px;border-bottom:2px solid var(--accent);color:var(--text);font-weight:600}
+    .article-body td{padding:10px 16px;border-bottom:1px solid var(--line)}
+    .article-body hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+    .article-body ul,.article-body ol{margin:16px 0 20px 24px}.article-body li{margin-bottom:8px}
+
+    .note-from-us{margin-top:60px;padding:28px;background:var(--panel);border-radius:18px;border:1px solid var(--line)}
+    .note-from-us h2{font-size:1.3rem;margin-bottom:16px;color:var(--text)}
+    .note-from-us p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:1rem}
+    .note-from-us a.email{font-family:'JetBrains Mono','Fira Code',monospace;font-size:1.15rem;color:var(--accent);display:block;margin:16px 0}
+
+    .series-nav{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px}
+    .series-nav a{font-size:0.95rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;transition:color .2s}
+    .series-nav a:hover{color:var(--text)}
+    .series-nav .label{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px}
+    .series-nav .next{text-align:right}
+
+    /* Blog index styles */
+    .article-list{display:flex;flex-direction:column;gap:18px}
+    .article-card{display:block;padding:24px 28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;transition:all .2s;box-shadow:var(--shadow)}
+    .article-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .article-card .card-meta{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono','Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px}
+    .article-card h3{font-size:1.25rem;color:var(--text);margin-bottom:8px;font-weight:600}
+    .article-card p{font-size:0.95rem;color:var(--muted);line-height:1.5;margin:0}
+    .article-card .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.72rem;padding:4px 10px;border-radius:999px;background:var(--panel-2);color:var(--accent);border:1px solid var(--line)}
+
+    .start-box{margin-bottom:40px;padding:20px 24px;background:var(--panel);border-radius:12px;border-left:3px solid var(--accent)}
+    .start-box p{margin:0;font-size:0.95rem;color:var(--muted)}
+    .start-box strong{color:var(--text)}
+
+    @media(max-width:768px){
+      .article-header h1{font-size:1.8rem}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .series-nav{flex-direction:column}
+      .footer-panel{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark">MP</div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+  <div class="article-header">
+    <div class="meta">Article 4 · April 11, 2026 · Migration Proof</div>
+    <h1>Five AI Personas That Replace Six Months of Migration Consulting</h1>
+    <p class="subtitle-text">What if the mapping kernel already knew the rules?</p>
+  </div>
+  <div class="article-body">
+    <p><em>What if the mapping kernel already knew the rules? What if the precondition checks ran automatically? What if the entire migration assessment — chain walk, validation, transformation, proof, and reporting — ran in fourteen minutes instead of six months? Here is how we built it.</em></p>
+<hr />
+<p>The traditional approach to migration assessment is human-intensive by design. Consultants interview stakeholders. Analysts build mapping spreadsheets. Testers execute load cycles. Programme managers coordinate workshops. Each of these activities takes time, costs money, and produces an output that is, at its core, a manually assembled approximation of something the source and target systems already know.</p>
+<p>The mapping rules are deterministic. The dependencies are structural. The validation criteria are formal. The only variable is the customer's data — and that is what the customer provides.</p>
+<p>If the rules, the dependencies, and the validation criteria are all knowable in advance, then the assessment is not a consulting engagement. It is a computation. And a computation does not need workshops.</p>
+<p>This is the premise behind Migration Proof. We built an engine that runs the full assessment pipeline — dependency discovery, precondition validation, forward transformation, bijective proof, and report assembly — without human intervention. The engine is operated by five specialised AI personas, each responsible for one phase of the pipeline.</p>
+<hr />
+<h2>The five personas</h2>
+<p>We use the word "persona" deliberately. Each agent has a specific domain, a specific skill set, and a specific role in the pipeline. They do not share responsibilities. They do not attend the same meetings (there are no meetings). They hand off to each other in sequence, and each one produces a verifiable output that the next one consumes.</p>
+<h3>Beacon — Chain discovery</h3>
+<p>Beacon's job is to discover the full scope of the migration. Given a starting set of objects — typically one hundred invoices — Beacon walks the dependency chain in both directions: upward to the goods receipts, purchase orders, materials, and suppliers that each invoice depends on; and downward to identify any payments or downstream documents.</p>
+<p>Beacon deduplicates as it walks. If fifty purchase orders reference the same supplier, Beacon extracts that supplier once. If three hundred purchase order line items reference the same material, Beacon extracts it once. The result is a deduplicated, dependency-ordered graph of every object that needs to migrate.</p>
+<p>From one hundred invoices, Beacon typically discovers eight hundred to one thousand objects across five to six entity types. This expansion — from a hundred starting points to nearly a thousand related objects — is what most programmes spend four to six weeks doing manually through workshops and scope definition meetings.</p>
+<p>Beacon does it in under a minute.</p>
+<h3>Razor — Precondition validation</h3>
+<p>Razor is the quality gate. Before any transformation is attempted, Razor checks every field of every record against formal precondition rules. These are not fuzzy "data quality" heuristics. They are hard constraints:</p>
+<ul>
+<li>Is the country code a valid ISO 3166-1 alpha-2 code?</li>
+<li>Is the payment term present in the target system's configuration table?</li>
+<li>Is the unit of measure a recognised ISO standard?</li>
+<li>Does the supplier referenced by this purchase order actually exist in the dataset?</li>
+<li>Does the material have a valid plant assignment for the relevant organisational structure?</li>
+</ul>
+<p>Records that fail any precondition are quarantined. They do not enter the transformation pipeline. They are diagnosed with the exact field, the exact value, the exact rule violated, and a specific remediation action.</p>
+<p>This is what we call the "chartered vehicle principle": bad data does not board the vehicle. It is identified, diagnosed, and reported at the gate — not discovered after loading, and not discovered on cutover weekend.</p>
+<p>Razor currently applies twenty-three formal checks per record. The rule set grows with every engagement, because rules discovered during one customer's assessment are retained (in anonymised form) for future use.</p>
+<h3>Atlas — Transformation</h3>
+<p>Atlas applies the mapping kernel. This is the set of forward transform functions that convert source records into target format. Each function is paired with an inverse — a reverse function that converts target records back into source format. These pairs are the foundation of the bijective proof.</p>
+<p>Atlas does not guess mappings. The transform pairs are built from deep knowledge of both source and target system architectures — the field structures, the API constraints, the value encoding rules, and the entity relationships. For a supplier record, this means knowing that the target API requires six nested sub-entities in a single atomic payload — and that missing any one of them creates a record that exists but cannot function.</p>
+<p>The mapping kernel currently covers the full procurement chain: suppliers, materials, purchase orders, goods receipts, and invoices. Each object type has its own set of transform/inverse pairs. Each pair has been verified against a live target system — not a mock, not a simulation, but a real system with real API constraints.</p>
+<h3>Prism — Bijective proof</h3>
+<p>Prism is the mathematical core. For every record that passes Razor's precondition gate and Atlas's transformation, Prism runs the roundtrip:</p>
+<ol>
+<li>Take the original source record</li>
+<li>Apply the forward transform (Atlas produced this)</li>
+<li>Apply the inverse transform</li>
+<li>Compare the recovered record to the original, field by field</li>
+</ol>
+<p>If every field matches — f⁻¹(f(x)) ≡ x — the record is certified lossless. Prism logs a proof entry in the Ownership Ledger: the record identifier, the proof result, a cryptographic hash, and a timestamp.</p>
+<p>If any field does not match, Prism flags the record as untransformable and reports the exact point of failure: which field, what the source value was, what the recovered value was, and why they differ.</p>
+<p>Prism does not sample. It does not use statistical inference. It runs the proof on every record individually. One hundred percent coverage is not an aspiration — it is the architecture.</p>
+<h3>Maestro — Orchestration and reporting</h3>
+<p>Maestro is the conductor. It sequences the other four personas in the correct order, manages the data flow between them, and assembles the final Intelligence Report.</p>
+<p>The Intelligence Report contains:</p>
+<ul>
+<li><strong>Proof summary</strong>: what percentage of records are proven lossless, by object type</li>
+<li><strong>Untransformable report</strong>: every record that failed, with per-field diagnosis and remediation</li>
+<li><strong>Cascade impact analysis</strong>: which root-cause failures block the most downstream objects</li>
+<li><strong>Dependency chain map</strong>: the full structural graph of all migrated objects</li>
+<li><strong>Ownership Ledger</strong>: the cryptographic proof record for every successful transformation</li>
+</ul>
+<p>Maestro also prioritises the remediation findings. If fixing one supplier's country code would unblock twenty-nine downstream objects, that finding appears at the top of the report — not buried in a list of five thousand records sorted alphabetically.</p>
+<hr />
+<h2>What this replaces</h2>
+<p>The five personas together replace the following activities from a traditional migration assessment:</p>
+<pre><code>Traditional (3–6 months)           Migration Proof (14 minutes)
+──────────────────────────────────────────────────────────────────
+Week 1–4:  Discovery workshops     Beacon: chain walk (47 seconds)
+Week 5–8:  Mapping spreadsheets    Atlas: kernel applied (4 minutes)
+Week 9–12: Test load cycle 1       Prism: proof (13 minutes)
+Week 13–16: Debug and remap        Razor: preconditions (1 minute)
+Week 17–20: Test load cycle 2–3    (not needed — proof is definitive)
+Week 21–24: UAT and reporting      Maestro: report (22 seconds)
+</code></pre>
+<p>The compression is not because the engine is faster at doing the same work. It is because the engine eliminates work that should never have been done by humans in the first place. The mapping rules are deterministic — they do not need to be discovered through workshops. The precondition checks are formal — they do not need to be identified through test-and-debug cycles. The proof is mathematical — it does not need multiple rounds of load testing to converge on an answer.</p>
+<hr />
+<h2>What makes this AI-native, not AI-assisted</h2>
+<p>There is an important distinction between AI-assisted migration and AI-native migration.</p>
+<p>AI-assisted migration takes the traditional process and adds AI at the edges: using a language model to help write mapping specifications, or using machine learning to identify potential data quality issues, or using a chatbot to help users navigate the migration tool. The core process is still human-driven. The AI assists.</p>
+<p>AI-native migration rebuilds the process around what AI does well: applying deterministic rules at scale, walking dependency graphs, running formal checks, executing mathematical proofs, and assembling structured reports. There are no workshops to assist with, because there are no workshops. There are no mapping spreadsheets to help write, because the mapping kernel already exists. The AI is not helping a human do the work. The AI is doing the work — because the work is mathematical, and mathematics does not benefit from human intuition.</p>
+<p>This is not a philosophical distinction. It has a direct commercial consequence. An AI-assisted process still takes weeks, still requires consultants, and still costs six figures — because the bottleneck is human, and the AI only accelerates the human. An AI-native process takes minutes, requires no consultants, and costs a fraction — because the bottleneck was never human capability. It was always the assumption that humans were necessary.</p>
+<hr />
+<h2>What the personas know that gets better over time</h2>
+<p>Each engagement teaches the engine. Not in a vague "machine learning" sense — in a specific, formalised sense:</p>
+<ul>
+<li>A precondition rule discovered during one engagement (e.g., "LAND1='UK' is not valid ISO 3166") becomes a permanent rule that catches the same issue for every future engagement.</li>
+<li>A value mapping pair validated during one engagement (e.g., "BUKRS 1000 maps to 1710 with inverse 1710→1000") is retained and available for any engagement using the same target configuration.</li>
+<li>A cascade pattern observed during one engagement (e.g., "supplier country code errors typically block 15-30x downstream objects") informs the priority ranking of findings in future reports.</li>
+</ul>
+<p>This means that Customer 10's assessment is measurably richer than Customer 1's. Not because Customer 10 has better data, but because the engine has accumulated more knowledge from the nine engagements before it. The precondition library is larger. The cascade patterns are better understood. The proof converges faster because more edge cases have been pre-identified.</p>
+<p>This is a compounding advantage. Every engagement makes the next one better. And it is an advantage that no human-delivery model can replicate, because human knowledge does not automatically transfer from one engagement to the next — it walks out of the door when the consultant moves to the next project.</p>
+<hr />
+<p>Our first release covers SAP ECC-to-S/4HANA, starting with the procurement chain. The architecture is system-agnostic — the same persona pipeline works wherever data transforms between systems. We will follow the demand.</p>
+<p>migrationproof.io is launching shortly.</p>
+<hr />
+    <div class="note-from-us">
+      <h2>A note from us</h2>
+      <p>Migration Proof is an AI-native operation. Five specialised AI personas run the chain walk, precondition checks, transformation, proof, and reporting. Behind them, twenty-five years of enterprise system experience shaped every rule they apply.</p>
+      <p>We are mostly agents — and we are proud of that, because agents prove every record, not a two percent sample. When you write to us, a human replies.</p>
+      <a href="mailto:hello@migrationproof.io" class="email">hello@migrationproof.io</a>
+      <p>We read every message. We reply to every question.</p>
+    </div>
+    <div class="series-nav">
+      <a href="/blog/dependency-chains/"><span class="label">← Previous</span>Dependency Chains</a>
+      <a href="/blog/95-percent-mapped/" class="next"><span class="label">Next →</span>95% Mapped</a>
+    </div>
+  </div>
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel" style="padding:22px"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a></div></div>
+  </div></footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>

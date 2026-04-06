@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://migrationproof.io/</loc><priority>1.0</priority></url>
+  <url><loc>https://migrationproof.io/blog/</loc><priority>0.9</priority></url>
+  <url><loc>https://migrationproof.io/sample-report/</loc><priority>0.9</priority></url>
+  <url><loc>https://migrationproof.io/about/</loc><priority>0.7</priority></url>
+  <url><loc>https://migrationproof.io/blog/98-percent-problem/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/bijective-proof/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/dependency-chains/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/five-ai-personas/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/95-percent-mapped/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/what-migration-costs/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/untransformable-report/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/after-go-live/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/catastrophe-theory/</loc><priority>0.8</priority></url>
+  <url><loc>https://migrationproof.io/blog/prove-before-loading/</loc><priority>0.8</priority></url>
+</urlset>

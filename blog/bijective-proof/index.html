@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bijective Proof: The Mathematical Framework Your Data Migration Is Missing — Migration Proof</title>
+  <meta name="description" content="Every system migration transforms data. Almost none prove it correct." />
+  <meta property="og:title" content="Bijective Proof: The Mathematical Framework Your Data Migration Is Missing" />
+  <meta property="og:description" content="Every system migration transforms data. Almost none prove it correct." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://migrationproof.io/blog/bijective-proof/" />
+  <link rel="icon" type="image/png" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+  <link rel="canonical" href="https://migrationproof.io/blog/bijective-proof/" />
+  <style>
+    :root{--bg:#071018;--bg-soft:#0d1722;--panel:rgba(14,24,36,0.88);--panel-2:rgba(255,255,255,0.04);--text:#e7eef7;--muted:#a8b6c8;--line:rgba(255,255,255,0.10);--accent:#82e6b5;--accent-2:#7db8ff;--shadow:0 20px 60px rgba(0,0,0,0.35);--max:1220px}
+    body.light{--bg:#f4f7fb;--bg-soft:#fff;--panel:rgba(255,255,255,0.86);--panel-2:rgba(0,0,0,0.03);--text:#102033;--muted:#566579;--line:rgba(16,32,51,0.10);--accent:#0b8f5b;--accent-2:#2368d1;--shadow:0 16px 40px rgba(11,29,54,0.10)}
+    *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:radial-gradient(circle at top left,rgba(125,184,255,0.18),transparent 30%),radial-gradient(circle at top right,rgba(130,230,181,0.12),transparent 26%),linear-gradient(180deg,var(--bg) 0%,#060b10 100%);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    body.light{background:radial-gradient(circle at top left,rgba(35,104,209,0.08),transparent 28%),radial-gradient(circle at top right,rgba(11,143,91,0.08),transparent 24%),linear-gradient(180deg,#f7fbff 0%,#eef4fb 100%)}
+    a{color:var(--accent-2);text-decoration:none}a:hover{color:var(--accent)}
+    .container{width:min(calc(100% - 32px),var(--max));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(7,16,24,0.55);border-bottom:1px solid var(--line)}body.light .topbar{background:rgba(255,255,255,0.75)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:700;letter-spacing:0.02em;color:var(--text)}.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#081017;font-weight:800;font-size:0.85rem}
+    .nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);font-size:0.95rem}.nav a:hover{color:var(--text)}
+    .toggle{border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:999px;padding:10px 14px;font-size:0.92rem;cursor:pointer}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+    .footer-panel{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;padding:22px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:0.94rem}.footer-links a{color:var(--muted)}.footer-links a:hover{color:var(--text)}
+    .muted{color:var(--muted)}
+
+    /* Article styles */
+    .article-header{padding:120px 24px 40px;max-width:760px;margin:0 auto}
+    .article-header .meta{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+    .article-header h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.2;font-weight:700;color:var(--text);margin-bottom:16px;letter-spacing:-0.02em}
+    .article-header .subtitle-text{font-size:1.15rem;color:var(--muted);line-height:1.6;font-style:italic}
+
+    .article-body{max-width:760px;margin:0 auto;padding:0 24px 80px;font-size:1.08rem;line-height:1.8}
+    .article-body h2{font-size:1.6rem;font-weight:700;color:var(--text);margin-top:48px;margin-bottom:16px;padding-top:24px;border-top:1px solid var(--line);letter-spacing:-0.01em}
+    .article-body p{margin-bottom:20px;color:var(--text)}
+    .article-body strong{color:var(--text);font-weight:600}
+    .article-body em{color:var(--accent)}
+    .article-body blockquote{border-left:3px solid var(--accent);padding:16px 24px;margin:28px 0;background:rgba(130,230,181,0.05);font-style:italic;border-radius:0 12px 12px 0}
+    .article-body code{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;background:var(--panel);padding:2px 6px;border-radius:4px;border:1px solid var(--line)}
+    .article-body pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;overflow-x:auto;margin:24px 0;line-height:1.5}
+    .article-body pre code{background:none;padding:0;font-size:0.85rem;border:none}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.95rem}
+    .article-body th{text-align:left;padding:10px 16px;border-bottom:2px solid var(--accent);color:var(--text);font-weight:600}
+    .article-body td{padding:10px 16px;border-bottom:1px solid var(--line)}
+    .article-body hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+    .article-body ul,.article-body ol{margin:16px 0 20px 24px}.article-body li{margin-bottom:8px}
+
+    .note-from-us{margin-top:60px;padding:28px;background:var(--panel);border-radius:18px;border:1px solid var(--line)}
+    .note-from-us h2{font-size:1.3rem;margin-bottom:16px;color:var(--text)}
+    .note-from-us p{color:var(--muted);line-height:1.7;margin-bottom:12px;font-size:1rem}
+    .note-from-us a.email{font-family:'JetBrains Mono','Fira Code',monospace;font-size:1.15rem;color:var(--accent);display:block;margin:16px 0}
+
+    .series-nav{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px}
+    .series-nav a{font-size:0.95rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;transition:color .2s}
+    .series-nav a:hover{color:var(--text)}
+    .series-nav .label{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px}
+    .series-nav .next{text-align:right}
+
+    /* Blog index styles */
+    .article-list{display:flex;flex-direction:column;gap:18px}
+    .article-card{display:block;padding:24px 28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;transition:all .2s;box-shadow:var(--shadow)}
+    .article-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .article-card .card-meta{font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono','Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px}
+    .article-card h3{font-size:1.25rem;color:var(--text);margin-bottom:8px;font-weight:600}
+    .article-card p{font-size:0.95rem;color:var(--muted);line-height:1.5;margin:0}
+    .article-card .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.72rem;padding:4px 10px;border-radius:999px;background:var(--panel-2);color:var(--accent);border:1px solid var(--line)}
+
+    .start-box{margin-bottom:40px;padding:20px 24px;background:var(--panel);border-radius:12px;border-left:3px solid var(--accent)}
+    .start-box p{margin:0;font-size:0.95rem;color:var(--muted)}
+    .start-box strong{color:var(--text)}
+
+    @media(max-width:768px){
+      .article-header h1{font-size:1.8rem}
+      .topbar-inner{flex-direction:column;padding:14px 0;align-items:flex-start}
+      .nav{width:100%;justify-content:space-between}
+      .series-nav{flex-direction:column}
+      .footer-panel{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="container topbar-inner">
+    <a class="brand" href="/"><div class="brand-mark">MP</div><div><div>Migration Proof</div><div class="muted" style="font-size:0.8rem;font-weight:500">Maths, not art</div></div></a>
+    <nav class="nav"><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a><button class="toggle" id="themeToggle" type="button">Light mode</button></nav>
+  </div></header>
+  <div class="article-header">
+    <div class="meta">Article 2 · April 4, 2026 · Migration Proof</div>
+    <h1>Bijective Proof: The Mathematical Framework Your Data Migration Is Missing</h1>
+    <p class="subtitle-text">Every system migration transforms data. Almost none prove it correct.</p>
+  </div>
+  <div class="article-body">
+    <p><em>Every system migration transforms data. Almost none of them prove the transformation is correct. Here is the mathematics that changes that — and what it looks like applied to real enterprise records.</em></p>
+<hr />
+<p>Every data migration is, at its core, a transformation. A record exists in System A with a certain structure, certain field names, certain value encodings. It needs to exist in System B with a different structure, different field names, different encodings. The migration builds a function that converts A-format records into B-format records.</p>
+<p>The question that almost nobody asks is: <strong>is that function lossless?</strong></p>
+<p>Not "did the records load successfully." Not "do the row counts match." Not "did the validation checks pass." Those are necessary but insufficient. The deeper question is whether the transformation preserved meaning — whether every distinction that existed in the source still exists in the target, and whether the conversion can be perfectly reversed.</p>
+<p>This is not a new question in mathematics. It has a precise answer, a formal test, and a name. It is called a <strong>bijective proof</strong>.</p>
+<hr />
+<h2>What bijection means in plain terms</h2>
+<p>A function is bijective if it is both injective (no two different inputs produce the same output) and surjective (every possible output has an input that produces it). In practical terms: nothing collapses, nothing is lost, and the function can be perfectly reversed.</p>
+<p>The test is simple. If you have a function f that transforms source records into target records, and an inverse function f⁻¹ that transforms target records back into source records, then the transformation is bijective if and only if:</p>
+<pre><code>f⁻¹(f(x)) ≡ x    for every record x
+</code></pre>
+<p>Apply the forward transform. Apply the inverse. Compare the result to the original. If they match exactly, the transformation is provably lossless. If they do not match, something was lost — and the point of mismatch tells you exactly what.</p>
+<p>This is not statistical. It is not probabilistic. It is a mathematical proof applied to every individual record. The result is certainty, not confidence.</p>
+<hr />
+<h2>Why this matters for data migration</h2>
+<p>Consider what happens without this test. A migration team builds a mapping: source field A maps to target field B, with a value conversion from code X to code Y. They load a sample of records. The load succeeds. The row counts match. The team reports success.</p>
+<p>But "the load succeeded" does not mean "the transformation is lossless." Here are three ways a transformation can succeed and still lose information:</p>
+<p><strong>Collapse.</strong> Two distinct values in the source map to the same value in the target. Both records load successfully. But the distinction between them — which may have been business-critical — has been destroyed. The function is not injective. The mapping is complete. The meaning is not.</p>
+<p><strong>Default substitution.</strong> A source field contains a null or non-standard value. The transformation substitutes a default. The record loads successfully. But the default may carry operational meaning (such as "immediate payment") that the original null did not intend. The function produced a valid output, but the output does not represent the input.</p>
+<p><strong>Precision loss.</strong> A numeric or coded value is converted between systems with different precision or encoding. The conversion is approximately correct but not exactly reversible. Like converting 37.5°C to Fahrenheit and back with rounding — 37.5 becomes 99.5 becomes 37.0. The roundtrip does not recover the original. Information has been silently lost.</p>
+<p>The bijective proof catches all three. If the inverse function does not recover the exact original, the test fails — and the failure report tells you which field, which value, and which type of loss occurred.</p>
+<hr />
+<h2>A worked example</h2>
+<p>Suppose you are migrating a supplier record from one ERP system to another. The source record has these fields:</p>
+<pre><code>Source record (System A):
+  VENDOR_ID    = 0000100234
+  NAME         = Müller Industrietechnik
+  COUNTRY      = DE
+  COMPANY_CODE = 1000
+  PAY_TERMS    = NET30
+  RECON_ACCT   = 160000
+  PURCH_ORG    = 1000
+  VENDOR_TYPE  = TRADE
+</code></pre>
+<p>The target system uses a different schema, different field names, and in some cases different value encodings. The forward transform f(x) produces:</p>
+<pre><code>Target record (System B):
+  PARTNER_ID   = 100234          # leading zeros stripped
+  PARTNER_NAME = Müller Industrietechnik
+  COUNTRY      = DE
+  COMPANY      = 1710            # value mapped: 1000 → 1710
+  PAYMENT      = ZN30            # value mapped: NET30 → ZN30
+  RECON_ACCT   = 160000
+  PURCH_ORG    = 1710            # value mapped: 1000 → 1710
+  PARTNER_TYPE = TRADE
+</code></pre>
+<p>Note that three fields changed value during the transformation. COMPANY_CODE 1000 became 1710. PAY_TERMS NET30 became ZN30. PURCH_ORG 1000 became 1710. These are not errors — they are intentional value mappings required by the target system's configuration.</p>
+<p>Now apply the inverse transform f⁻¹(y):</p>
+<pre><code>Recovered record:
+  VENDOR_ID    = 0000100234      # leading zeros restored
+  NAME         = Müller Industrietechnik
+  COUNTRY      = DE
+  COMPANY_CODE = 1000            # inverse: 1710 → 1000
+  PAY_TERMS    = NET30           # inverse: ZN30 → NET30
+  RECON_ACCT   = 160000
+  PURCH_ORG    = 1000            # inverse: 1710 → 1000
+  VENDOR_TYPE  = TRADE
+</code></pre>
+<p>Now compare field by field:</p>
+<pre><code>Field         Source         Recovered     Match?
+─────────────────────────────────────────────────
+VENDOR_ID     0000100234    0000100234     ✓
+NAME          Müller Ind.   Müller Ind.    ✓
+COUNTRY       DE            DE             ✓
+COMPANY_CODE  1000          1000           ✓
+PAY_TERMS     NET30         NET30          ✓
+RECON_ACCT    160000        160000         ✓
+PURCH_ORG     1000          1000           ✓
+VENDOR_TYPE   TRADE         TRADE          ✓
+
+Result: f⁻¹(f(x)) ≡ x — ALL FIELDS MATCH — PROVEN LOSSLESS
+</code></pre>
+<p>Every field matches. The transformation is bijective for this record. Even though three values changed during the forward transform (1000→1710, NET30→ZN30), the inverse perfectly recovered the originals. The value mappings are lossless because they are one-to-one: 1000 always maps to 1710, and 1710 always maps back to 1000. No ambiguity. No collapse.</p>
+<hr />
+<h2>What a failure looks like</h2>
+<p>Now consider a record where the proof fails:</p>
+<pre><code>Source record:
+  VENDOR_ID    = 0000100891
+  NAME         = Pacific Trading Ltd
+  COUNTRY      = UK              ← not valid ISO 3166
+  COMPANY_CODE = 1000
+  PAY_TERMS    = ZCUS            ← custom code, no target equivalent
+  ...
+</code></pre>
+<p>The forward transform encounters two problems:</p>
+<ol>
+<li>
+<p>COUNTRY = "UK" is not a valid ISO 3166-1 alpha-2 code. The correct code is "GB". The transform cannot map "UK" to a valid target value without making an assumption.</p>
+</li>
+<li>
+<p>PAY_TERMS = "ZCUS" is a custom payment term that exists in the source system but has no equivalent in the target configuration.</p>
+</li>
+</ol>
+<p>This record is <strong>untransformable</strong>. It cannot be losslessly converted because the source values have no clean inverse mapping. If the transform guesses (mapping "UK" to "GB"), the inverse would recover "GB" not "UK" — and the proof would fail: f⁻¹(f(x)) ≠ x.</p>
+<p>The proof does not just say "this record failed." It says exactly why:</p>
+<pre><code>PROOF FAILURE REPORT:
+  Record:  VENDOR_ID 0000100891
+  Field:   COUNTRY
+  Value:   &quot;UK&quot;
+  Issue:   Not valid ISO 3166-1 alpha-2
+  Action:  Correct to &quot;GB&quot; in source system before migration
+
+  Field:   PAY_TERMS
+  Value:   &quot;ZCUS&quot;
+  Issue:   No equivalent in target payment terms configuration
+  Action:  Map to standard term (e.g. ZN60) or create ZCUS in target config
+</code></pre>
+<p>This is not a test failure. It is a <strong>diagnosed finding</strong> with a specific remediation path. The proof did not just find a problem — it explained it, located it, and told you how to fix it.</p>
+<hr />
+<h2>The architecture of a proof engine</h2>
+<p>Running bijective proof at scale requires three components that most migration programmes do not build:</p>
+<p><strong>Transform/inverse pairs.</strong> Every object type needs a forward transform function AND a corresponding inverse function. Most migration tools build the forward transform (source→target mapping) but never build the inverse. Without the inverse, there is no roundtrip. Without the roundtrip, there is no proof.</p>
+<pre><code class="language-python">
+def forward_transform(source_record):
+    target = {}
+    target['PARTNER_ID'] = source_record['VENDOR_ID'].lstrip('0')
+    target['COMPANY'] = VALUE_MAP['COMPANY_CODE'][source_record['COMPANY_CODE']]
+    target['PAYMENT'] = VALUE_MAP['PAY_TERMS'][source_record['PAY_TERMS']]
+    # ... remaining fields
+    return target
+
+def inverse_transform(target_record):
+    source = {}
+    source['VENDOR_ID'] = target_record['PARTNER_ID'].zfill(10)
+    source['COMPANY_CODE'] = INVERSE_MAP['COMPANY'][target_record['COMPANY']]
+    source['PAY_TERMS'] = INVERSE_MAP['PAYMENT'][target_record['PAYMENT']]
+    # ... remaining fields
+    return source
+
+def prove(source_record):
+    target = forward_transform(source_record)
+    recovered = inverse_transform(target)
+    for field in source_record:
+        if source_record[field] != recovered[field]:
+            return ProofFailure(field, source_record[field], recovered[field])
+    return ProofSuccess()
+</code></pre>
+<p>The <code>prove()</code> function is the bijective test. It is embarrassingly simple — and that simplicity is its strength. There is no statistical model. There is no confidence interval. There is no sampling. Just: transform, reverse, compare.</p>
+<p><strong>Precondition gate.</strong> Before the transform is even attempted, every field of every record should be checked against formal preconditions. Is the country code valid ISO? Is the payment term in the target configuration? Is the unit of measure standard? Records that fail preconditions are quarantined before transformation — they do not enter the pipeline. This prevents the transform from making assumptions (like silently mapping "UK" to "GB") that would create false passes.</p>
+<p><strong>Dependency ordering.</strong> In enterprise systems, objects have structural dependencies. A purchase order references a supplier. A goods receipt references a purchase order. An invoice references a goods receipt. If the supplier fails the proof, every object downstream must also be flagged — not because they failed their own proof, but because their dependency is unresolved. This cascade analysis is as important as the proof itself.</p>
+<hr />
+<h2>What the proof gives you that testing does not</h2>
+<p>Traditional migration testing loads records and checks whether the load succeeded. This answers the question: <em>can the target system accept this data?</em></p>
+<p>The bijective proof answers a different question: <em>did the transformation preserve meaning?</em></p>
+<p>These are fundamentally different assertions:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Load testing</th>
+<th>Bijective proof</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What it checks</td>
+<td>Target system acceptance</td>
+<td>Transformation correctness</td>
+</tr>
+<tr>
+<td>Coverage</td>
+<td>Sample (typically 2-5%)</td>
+<td>100% of records</td>
+</tr>
+<tr>
+<td>What it catches</td>
+<td>Load errors, format violations</td>
+<td>Lossy mappings, collapsed values, precision loss</td>
+</tr>
+<tr>
+<td>What it misses</td>
+<td>Silent meaning loss</td>
+<td>Nothing — the roundtrip is exhaustive</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Pass/fail per load batch</td>
+<td>Per-record, per-field diagnosis with remediation</td>
+</tr>
+<tr>
+<td>Trust model</td>
+<td>Trust the tester</td>
+<td>Trust the mathematics — verify it yourself</td>
+</tr>
+</tbody>
+</table>
+<p>The last row matters most. A load test result requires trust in the team that ran it. A bijective proof requires no trust at all. The inverse function is there. Anyone can run the roundtrip. If f⁻¹(f(x)) ≡ x, the transformation is lossless. If it does not, something was lost. The mathematics is self-verifying.</p>
+<hr />
+<h2>Beyond migration: where this principle leads</h2>
+<p>The bijective proof does not retire after migration. Once you have built the forward and inverse functions for every object type, you have created something valuable: a <strong>formal model of your data's transformation rules</strong>.</p>
+<p>That model can verify ongoing data quality — every new record created in the target system can be proven against the same rules. It can detect drift — if business rules change and the inverse no longer recovers the original, the proof surfaces the divergence. It can enforce integrity — new records that would fail the proof are caught before they enter the system, not after they have corrupted downstream processes.</p>
+<p>The migration is the moment the model is built. The model's value persists long after the migration is complete.</p>
+<hr />
+<h2>Getting started</h2>
+<p>At Migration Proof, we have built this engine. Forward and inverse transforms for every object type in the procurement chain — suppliers, materials, purchase orders, goods receipts, invoices. Formal precondition checks on every field. Dependency chain analysis with cascade impact. And the bijective proof running on every record, producing a per-field diagnosis for every failure and a cryptographically hashed Ownership Ledger entry for every success.</p>
+<p>Our first release covers SAP ECC-to-S/4HANA migrations. The mathematics applies to any system-to-system transformation — Oracle, Dynamics, legacy platforms, or any combination.</p>
+<p>migrationproof.io is launching shortly. We will be publishing the next article in this series on dependency chain integrity — the structural ordering that determines whether your migrated data can actually function in the target system, or whether it arrives intact but operationally dead.</p>
+<hr />
+    <div class="note-from-us">
+      <h2>A note from us</h2>
+      <p>Migration Proof is an AI-native operation. Five specialised AI personas run the chain walk, precondition checks, transformation, proof, and reporting. Behind them, twenty-five years of enterprise system experience shaped every rule they apply.</p>
+      <p>We are mostly agents — and we are proud of that, because agents prove every record, not a two percent sample. When you write to us, a human replies.</p>
+      <a href="mailto:hello@migrationproof.io" class="email">hello@migrationproof.io</a>
+      <p>We read every message. We reply to every question.</p>
+    </div>
+    <div class="series-nav">
+      <a href="/blog/98-percent-problem/"><span class="label">← Previous</span>The 98% Problem</a>
+      <a href="/blog/dependency-chains/" class="next"><span class="label">Next →</span>Dependency Chains</a>
+    </div>
+  </div>
+  <footer style="padding:34px 0 56px"><div class="container">
+    <div class="card footer-panel" style="padding:22px"><div><small style="display:block;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-size:0.72rem;margin-bottom:8px">Migration Proof</small><p style="margin:0;color:var(--muted);line-height:1.65;font-size:0.95rem">Transformation integrity for data migrations. Bijective proof on every record. Launching shortly.</p></div>
+    <div class="footer-links"><a href="/">Home</a><a href="/blog/">Articles</a><a href="/about/">About</a><a href="mailto:hello@migrationproof.io">Contact</a></div></div>
+  </div></footer>
+  <script>
+    const toggle=document.getElementById('themeToggle');const saved=localStorage.getItem('mp-theme');
+    if(saved==='light'){document.body.classList.add('light');toggle.textContent='Dark mode'}
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('light');const l=document.body.classList.contains('light');toggle.textContent=l?'Dark mode':'Light mode';localStorage.setItem('mp-theme',l?'light':'dark')});
+  </script>
+</body>
+</html>
